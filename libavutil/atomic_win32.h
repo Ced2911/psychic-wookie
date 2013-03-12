@@ -21,7 +21,11 @@
 #ifndef AVUTIL_ATOMIC_WIN32_H
 #define AVUTIL_ATOMIC_WIN32_H
 
+#ifdef _XBOX
+#include <xtl.h>
+#else
 #include <windows.h>
+#endif
 
 #include "atomic.h"
 

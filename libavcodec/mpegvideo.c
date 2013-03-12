@@ -1715,10 +1715,10 @@ int ff_MPV_frame_start(MpegEncContext *s, AVCodecContext *avctx)
         assert(s->avctx->noise_reduction && s->encoding);
         update_noise_reduction(s);
     }
-
+#ifndef _XBOX
     if (CONFIG_MPEG_XVMC_DECODER && s->avctx->xvmc_acceleration)
         return ff_xvmc_field_start(s, avctx);
-
+#endif
     return 0;
 }
 
@@ -1727,11 +1727,14 @@ int ff_MPV_frame_start(MpegEncContext *s, AVCodecContext *avctx)
 void ff_MPV_frame_end(MpegEncContext *s)
 {
     int i;
+#ifndef _XBOX
     /* redraw edges for the frame if decoding didn't complete */
     // just to make sure that all data is rendered.
     if (CONFIG_MPEG_XVMC_DECODER && s->avctx->xvmc_acceleration) {
         ff_xvmc_field_end(s);
-   } else if ((s->er.error_count || s->encoding) &&
+   } else
+#endif 
+	   if ((s->er.error_count || s->encoding) &&
               !s->avctx->hwaccel &&
               !(s->avctx->codec->capabilities & CODEC_CAP_HWACCEL_VDPAU) &&
               s->unrestricted_mv &&
@@ -2005,11 +2008,12 @@ void MPV_decode_mb_internal(MpegEncContext *s, int16_t block[12][64],
                             int is_mpeg12)
 {
     const int mb_xy = s->mb_y * s->mb_stride + s->mb_x;
+#ifndef _XBOX
     if(CONFIG_MPEG_XVMC_DECODER && s->avctx->xvmc_acceleration){
         ff_xvmc_decode_mb(s);//xvmc uses pblocks
         return;
     }
-
+#endif
     if(s->avctx->debug&FF_DEBUG_DCT_COEFF) {
        /* print DCT coefficients */
        int i,j;

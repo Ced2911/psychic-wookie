@@ -59,6 +59,17 @@ void av_register_all(void)
 
     avcodec_register_all();
 
+#ifdef _XBOX
+	/* demuxers */
+	REGISTER_DEMUXER (AAC,              aac);
+	REGISTER_DEMUXER (AC3,              ac3);
+	REGISTER_DEMUXER (FLAC,             flac);
+	REGISTER_DEMUXER (H261,             h261);
+    REGISTER_DEMUXER (H263,             h263);
+    REGISTER_DEMUXER (H264,             h264);
+	REGISTER_DEMUXER (AVI,              avi);
+	REGISTER_DEMUXER (MATROSKA,         matroska);
+#else
     /* (de)muxers */
     REGISTER_MUXER   (A64,              a64);
     REGISTER_DEMUXER (AAC,              aac);
@@ -253,8 +264,12 @@ void av_register_all(void)
     REGISTER_DEMUXER (XWMA,             xwma);
     REGISTER_DEMUXER (YOP,              yop);
     REGISTER_MUXDEMUX(YUV4MPEGPIPE,     yuv4mpegpipe);
+#endif
 
     /* protocols */
+#ifdef _XBOX
+	 REGISTER_PROTOCOL(FILE,             file);
+#else
 #if FF_API_APPLEHTTP_PROTO
     REGISTER_PROTOCOL(APPLEHTTP,        applehttp);
 #endif
@@ -284,11 +299,14 @@ void av_register_all(void)
     REGISTER_PROTOCOL(TCP,              tcp);
     REGISTER_PROTOCOL(TLS,              tls);
     REGISTER_PROTOCOL(UDP,              udp);
+#endif
 
+#ifndef _XBOX
     /* external libraries */
     REGISTER_PROTOCOL(LIBRTMP,          librtmp);
     REGISTER_PROTOCOL(LIBRTMPE,         librtmpe);
     REGISTER_PROTOCOL(LIBRTMPS,         librtmps);
     REGISTER_PROTOCOL(LIBRTMPT,         librtmpt);
     REGISTER_PROTOCOL(LIBRTMPTE,        librtmpte);
+#endif
 }

@@ -1,5 +1,7 @@
 *.a
 *.o
+*.xex
+*.obj
 *.d
 *.def
 *.dll

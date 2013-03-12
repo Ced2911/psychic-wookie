@@ -59,6 +59,8 @@ static void ff_mlp_filter_channel(int32_t *state, const int32_t *coeff,
 void ff_mlpdsp_init(MLPDSPContext *c)
 {
     c->mlp_filter_channel = ff_mlp_filter_channel;
+#ifndef _XBOX
     if (ARCH_X86)
         ff_mlpdsp_init_x86(c);
+#endif
 }

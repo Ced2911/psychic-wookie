@@ -208,9 +208,10 @@ av_cold void ff_ac3dsp_init(AC3DSPContext *c, int bit_exact)
     c->compute_mantissa_size = ac3_compute_mantissa_size_c;
     c->extract_exponents = ac3_extract_exponents_c;
     c->downmix = ac3_downmix_c;
-
+#ifndef _XBOX
     if (ARCH_ARM)
         ff_ac3dsp_init_arm(c, bit_exact);
     if (ARCH_X86)
         ff_ac3dsp_init_x86(c, bit_exact);
+#endif
 }

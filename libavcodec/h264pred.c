@@ -567,7 +567,8 @@ void ff_h264_pred_init(H264PredContext *h, int codec_id, const int bit_depth,
             H264_PRED(8)
             break;
     }
-
+#ifndef _XBOX
     if (ARCH_ARM) ff_h264_pred_init_arm(h, codec_id, bit_depth, chroma_format_idc);
     if (ARCH_X86) ff_h264_pred_init_x86(h, codec_id, bit_depth, chroma_format_idc);
+#endif
 }

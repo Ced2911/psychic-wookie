@@ -722,10 +722,10 @@ av_cold int ff_MPV_encode_init(AVCodecContext *avctx)
     /* init */
     if (ff_MPV_common_init(s) < 0)
         return -1;
-
+#ifndef _XBOX
     if (ARCH_X86)
         ff_MPV_encode_init_x86(s);
-
+#endif
     if (!s->dct_quantize)
         s->dct_quantize = ff_dct_quantize_c;
     if (!s->denoise_dct)

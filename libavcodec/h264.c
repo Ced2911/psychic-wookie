@@ -2764,11 +2764,11 @@ static int field_end(H264Context *h, int in_setup)
     if (!in_setup && !h->droppable)
         ff_thread_report_progress(&h->cur_pic_ptr->tf, INT_MAX,
                                   h->picture_structure == PICT_BOTTOM_FIELD);
-
+#ifndef _XBOX
     if (CONFIG_H264_VDPAU_DECODER &&
         h->avctx->codec->capabilities & CODEC_CAP_HWACCEL_VDPAU)
         ff_vdpau_h264_set_reference_frames(h);
-
+#endif
     if (in_setup || !(avctx->active_thread_type & FF_THREAD_FRAME)) {
         if (!h->droppable) {
             err = ff_h264_execute_ref_pic_marking(h, h->mmco, h->mmco_index);
@@ -2785,11 +2785,11 @@ static int field_end(H264Context *h, int in_setup)
             av_log(avctx, AV_LOG_ERROR,
                    "hardware accelerator failed to decode picture\n");
     }
-
+#ifndef _XBOX
     if (CONFIG_H264_VDPAU_DECODER &&
         h->avctx->codec->capabilities & CODEC_CAP_HWACCEL_VDPAU)
         ff_vdpau_h264_picture_complete(h);
-
+#endif
     /*
      * FIXME: Error handling code does not seem to support interlaced
      * when slices span multiple rows
@@ -4462,9 +4462,11 @@ again:
                     if (h->avctx->hwaccel &&
                         h->avctx->hwaccel->start_frame(h->avctx, NULL, 0) < 0)
                         return -1;
+#ifndef _XBOX
                     if (CONFIG_H264_VDPAU_DECODER &&
                         h->avctx->codec->capabilities & CODEC_CAP_HWACCEL_VDPAU)
                         ff_vdpau_h264_picture_start(h);
+#endif
                 }
 
                 if (hx->redundant_pic_count == 0 &&
@@ -4480,6 +4482,7 @@ again:
                                                          &buf[buf_index - consumed],
                                                          consumed) < 0)
                             return -1;
+#ifndef _XBOX
                     } else if (CONFIG_H264_VDPAU_DECODER &&
                                h->avctx->codec->capabilities & CODEC_CAP_HWACCEL_VDPAU) {
                         static const uint8_t start_code[] = {
@@ -4488,6 +4491,7 @@ again:
                                                 sizeof(start_code));
                         ff_vdpau_add_data_chunk(h->cur_pic_ptr->f.data[0], &buf[buf_index - consumed],
                                                 consumed);
+#endif
                     } else
                         context_count++;
                 }

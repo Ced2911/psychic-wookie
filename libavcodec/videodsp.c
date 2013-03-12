@@ -41,11 +41,12 @@ void ff_videodsp_init(VideoDSPContext *ctx, int bpc)
     } else {
         ctx->emulated_edge_mc = ff_emulated_edge_mc_16;
     }
-
+#ifndef _XBOX
     if (ARCH_ARM)
         ff_videodsp_init_arm(ctx, bpc);
     if (ARCH_PPC)
         ff_videodsp_init_ppc(ctx, bpc);
     if (ARCH_X86)
         ff_videodsp_init_x86(ctx, bpc);
+#endif
 }

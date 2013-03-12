@@ -2749,7 +2749,7 @@ av_cold void ff_dsputil_init(DSPContext* c, AVCodecContext *avctx)
         break;
     }
 
-
+#ifndef _XBOX
     if (HAVE_MMX)        ff_dsputil_init_mmx   (c, avctx);
     if (ARCH_ARM)        ff_dsputil_init_arm   (c, avctx);
     if (HAVE_VIS)        ff_dsputil_init_vis   (c, avctx);
@@ -2757,7 +2757,7 @@ av_cold void ff_dsputil_init(DSPContext* c, AVCodecContext *avctx)
     if (ARCH_PPC)        ff_dsputil_init_ppc   (c, avctx);
     if (ARCH_SH4)        ff_dsputil_init_sh4   (c, avctx);
     if (ARCH_BFIN)       ff_dsputil_init_bfin  (c, avctx);
-
+#endif
     ff_init_scantable_permutation(c->idct_permutation,
                                   c->idct_permutation_type);
 }

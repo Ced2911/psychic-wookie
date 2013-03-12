@@ -88,7 +88,8 @@ void ff_vp56dsp_init(VP56DSPContext *s, enum AVCodecID codec)
             s->vp6_filter_diag4 = ff_vp6_filter_diag4_c;
         }
     }
-
+#ifndef _XBOX
     if (ARCH_ARM) ff_vp56dsp_init_arm(s, codec);
     if (ARCH_X86) ff_vp56dsp_init_x86(s, codec);
+#endif
 }

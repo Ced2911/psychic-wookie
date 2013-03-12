@@ -42,7 +42,7 @@ void ff_h264chroma_init(H264ChromaContext *c, int bit_depth)
     } else {
         SET_CHROMA(8);
     }
-
+#ifndef _XBOX
     if (ARCH_ARM)
         ff_h264chroma_init_arm(c, bit_depth);
     if (ARCH_PPC)
@@ -51,4 +51,5 @@ void ff_h264chroma_init(H264ChromaContext *c, int bit_depth)
         ff_h264chroma_init_sh4(c, bit_depth);
     if (ARCH_X86)
         ff_h264chroma_init_x86(c, bit_depth);
+#endif
 }
