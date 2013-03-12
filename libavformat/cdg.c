@@ -64,9 +64,9 @@ static int read_packet(AVFormatContext *s, AVPacket *pkt)
 }
 
 AVInputFormat ff_cdg_demuxer = {
-    .name           = "cdg",
-    .long_name      = NULL_IF_CONFIG_SMALL("CD Graphics"),
-    .read_header    = read_header,
-    .read_packet    = read_packet,
-    .extensions     = "cdg",
+    "cdg",
+    NULL_IF_CONFIG_SMALL("CD Graphics"),
+    0, "cdg",
+    0, 0, 0, 0, 0, 0, read_header,
+    read_packet,
 };

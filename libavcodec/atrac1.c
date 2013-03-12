@@ -372,16 +372,19 @@ static av_cold int atrac1_decode_init(AVCodecContext *avctx)
 }
 
 
+static const enum AVSampleFormat tmp__0[] = { AV_SAMPLE_FMT_FLTP,
+                                                      AV_SAMPLE_FMT_NONE };
+
+
 AVCodec ff_atrac1_decoder = {
-    .name           = "atrac1",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_ATRAC1,
-    .priv_data_size = sizeof(AT1Ctx),
-    .init           = atrac1_decode_init,
-    .close          = atrac1_decode_end,
-    .decode         = atrac1_decode_frame,
-    .capabilities   = CODEC_CAP_DR1,
-    .long_name      = NULL_IF_CONFIG_SMALL("Atrac 1 (Adaptive TRansform Acoustic Coding)"),
-    .sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_FLTP,
-                                                      AV_SAMPLE_FMT_NONE },
+    "atrac1",
+    "Atrac 1 (Adaptive TRansform Acoustic Coding)",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_ATRAC1,
+    0x0002,
+    0, 0, 0, tmp__0,
+    0, 0, 0, 0, sizeof(AT1Ctx),
+    0, 0, 0, 0, 0, atrac1_decode_init,
+    0, 0, atrac1_decode_frame,
+    atrac1_decode_end,
 };

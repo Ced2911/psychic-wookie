@@ -5703,34 +5703,34 @@ static const enum AVPixelFormat vc1_hwaccel_pixfmt_list_420[] = {
 };
 
 AVCodec ff_vc1_decoder = {
-    .name           = "vc1",
-    .type           = AVMEDIA_TYPE_VIDEO,
-    .id             = AV_CODEC_ID_VC1,
-    .priv_data_size = sizeof(VC1Context),
-    .init           = vc1_decode_init,
-    .close          = ff_vc1_decode_end,
-    .decode         = vc1_decode_frame,
-    .flush          = ff_mpeg_flush,
-    .capabilities   = CODEC_CAP_DR1 | CODEC_CAP_DELAY,
-    .long_name      = NULL_IF_CONFIG_SMALL("SMPTE VC-1"),
-    .pix_fmts       = vc1_hwaccel_pixfmt_list_420,
-    .profiles       = NULL_IF_CONFIG_SMALL(profiles)
+    "vc1",
+    "SMPTE VC-1",
+    AVMEDIA_TYPE_VIDEO,
+    AV_CODEC_ID_VC1,
+    0x0002 | 0x0020,
+    0, vc1_hwaccel_pixfmt_list_420,
+    0, 0, 0, 0, 0, profiles,
+    sizeof(VC1Context),
+    0, 0, 0, 0, 0, vc1_decode_init,
+    0, 0, vc1_decode_frame,
+    ff_vc1_decode_end,
+    ff_mpeg_flush
 };
 
 #if CONFIG_WMV3_DECODER
 AVCodec ff_wmv3_decoder = {
-    .name           = "wmv3",
-    .type           = AVMEDIA_TYPE_VIDEO,
-    .id             = AV_CODEC_ID_WMV3,
-    .priv_data_size = sizeof(VC1Context),
-    .init           = vc1_decode_init,
-    .close          = ff_vc1_decode_end,
-    .decode         = vc1_decode_frame,
-    .flush          = ff_mpeg_flush,
-    .capabilities   = CODEC_CAP_DR1 | CODEC_CAP_DELAY,
-    .long_name      = NULL_IF_CONFIG_SMALL("Windows Media Video 9"),
-    .pix_fmts       = vc1_hwaccel_pixfmt_list_420,
-    .profiles       = NULL_IF_CONFIG_SMALL(profiles)
+    "wmv3",
+    "Windows Media Video 9",
+    AVMEDIA_TYPE_VIDEO,
+    AV_CODEC_ID_WMV3,
+    0x0002 | 0x0020,
+    0, vc1_hwaccel_pixfmt_list_420,
+    0, 0, 0, 0, 0, profiles,
+    sizeof(VC1Context),
+    0, 0, 0, 0, 0, vc1_decode_init,
+    0, 0, vc1_decode_frame,
+    ff_vc1_decode_end,
+    ff_mpeg_flush
 };
 #endif
 

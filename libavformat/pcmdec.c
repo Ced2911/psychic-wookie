@@ -82,87 +82,47 @@ static int pcm_read_packet(AVFormatContext *s, AVPacket *pkt)
 }
 
 static const AVOption pcm_options[] = {
-    { "sample_rate", "", offsetof(PCMAudioDemuxerContext, sample_rate), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_DECODING_PARAM },
-    { "channels",    "", offsetof(PCMAudioDemuxerContext, channels),    AV_OPT_TYPE_INT, {.i64 = 1}, 0, INT_MAX, AV_OPT_FLAG_DECODING_PARAM },
+    { "sample_rate", "", offsetof(PCMAudioDemuxerContext, sample_rate), AV_OPT_TYPE_INT, {0}, 0, INT_MAX, AV_OPT_FLAG_DECODING_PARAM },
+    { "channels",    "", offsetof(PCMAudioDemuxerContext, channels),    AV_OPT_TYPE_INT, {1}, 0, INT_MAX, AV_OPT_FLAG_DECODING_PARAM },
     { NULL },
 };
 
-#define PCMDEF(name_, long_name_, ext, codec)               \
-static const AVClass name_ ## _demuxer_class = {            \
-    .class_name = #name_ " demuxer",                        \
-    .item_name  = av_default_item_name,                     \
-    .option     = pcm_options,                              \
-    .version    = LIBAVUTIL_VERSION_INT,                    \
-};                                                          \
-AVInputFormat ff_pcm_ ## name_ ## _demuxer = {              \
-    .name           = #name_,                               \
-    .long_name      = NULL_IF_CONFIG_SMALL(long_name_),     \
-    .priv_data_size = sizeof(PCMAudioDemuxerContext),       \
-    .read_header    = pcm_read_header,                      \
-    .read_packet    = pcm_read_packet,                      \
-    .read_seek      = ff_pcm_read_seek,                     \
-    .flags          = AVFMT_GENERIC_INDEX,                  \
-    .extensions     = ext,                                  \
-    .raw_codec_id   = codec,                                \
-    .priv_class     = &name_ ## _demuxer_class,             \
-};
+static const AVClass f64be_demuxer_class = { "f64be" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_f64be_demuxer = { "f64be", NULL_IF_CONFIG_SMALL("PCM 64-bit floating-point big-endian"), 0x0100, ((void *)0), 0, &f64be_demuxer_class, 0, AV_CODEC_ID_PCM_F64BE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(f64be, "PCM 64-bit floating-point big-endian",
-       NULL, AV_CODEC_ID_PCM_F64BE)
+static const AVClass f64le_demuxer_class = { "f64le" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_f64le_demuxer = { "f64le", NULL_IF_CONFIG_SMALL("PCM 64-bit floating-point little-endian"), 0x0100, ((void *)0), 0, &f64le_demuxer_class, 0, AV_CODEC_ID_PCM_F64LE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(f64le, "PCM 64-bit floating-point little-endian",
-       NULL, AV_CODEC_ID_PCM_F64LE)
+static const AVClass f32be_demuxer_class = { "f32be" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_f32be_demuxer = { "f32be", NULL_IF_CONFIG_SMALL("PCM 32-bit floating-point big-endian"), 0x0100, ((void *)0), 0, &f32be_demuxer_class, 0, AV_CODEC_ID_PCM_F32BE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(f32be, "PCM 32-bit floating-point big-endian",
-       NULL, AV_CODEC_ID_PCM_F32BE)
+static const AVClass f32le_demuxer_class = { "f32le" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_f32le_demuxer = { "f32le", NULL_IF_CONFIG_SMALL("PCM 32-bit floating-point little-endian"), 0x0100, ((void *)0), 0, &f32le_demuxer_class, 0, AV_CODEC_ID_PCM_F32LE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(f32le, "PCM 32-bit floating-point little-endian",
-       NULL, AV_CODEC_ID_PCM_F32LE)
+static const AVClass s32be_demuxer_class = { "s32be" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_s32be_demuxer = { "s32be", NULL_IF_CONFIG_SMALL("PCM signed 32-bit big-endian"), 0x0100, ((void *)0), 0, &s32be_demuxer_class, 0, AV_CODEC_ID_PCM_S32BE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(s32be, "PCM signed 32-bit big-endian",
-       NULL, AV_CODEC_ID_PCM_S32BE)
+static const AVClass s32le_demuxer_class = { "s32le" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_s32le_demuxer = { "s32le", NULL_IF_CONFIG_SMALL("PCM signed 32-bit little-endian"), 0x0100, ((void *)0), 0, &s32le_demuxer_class, 0, AV_CODEC_ID_PCM_S32LE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(s32le, "PCM signed 32-bit little-endian",
-       NULL, AV_CODEC_ID_PCM_S32LE)
+static const AVClass s24be_demuxer_class = { "s24be" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_s24be_demuxer = { "s24be", NULL_IF_CONFIG_SMALL("PCM signed 24-bit big-endian"), 0x0100, ((void *)0), 0, &s24be_demuxer_class, 0, AV_CODEC_ID_PCM_S24BE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(s24be, "PCM signed 24-bit big-endian",
-       NULL, AV_CODEC_ID_PCM_S24BE)
+static const AVClass s24le_demuxer_class = { "s24le" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_s24le_demuxer = { "s24le", NULL_IF_CONFIG_SMALL("PCM signed 24-bit little-endian"), 0x0100, ((void *)0), 0, &s24le_demuxer_class, 0, AV_CODEC_ID_PCM_S24LE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(s24le, "PCM signed 24-bit little-endian",
-       NULL, AV_CODEC_ID_PCM_S24LE)
+static const AVClass s16be_demuxer_class = { "s16be" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_s16be_demuxer = { "s16be", NULL_IF_CONFIG_SMALL("PCM signed 16-bit big-endian"), 0x0100, ("sw"), 0, &s16be_demuxer_class, 0, AV_CODEC_ID_PCM_S16BE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(s16be, "PCM signed 16-bit big-endian",
-       AV_NE("sw", NULL), AV_CODEC_ID_PCM_S16BE)
+static const AVClass s16le_demuxer_class = { "s16le" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_s16le_demuxer = { "s16le", NULL_IF_CONFIG_SMALL("PCM signed 16-bit little-endian"), 0x0100, (((void *)0)), 0, &s16le_demuxer_class, 0, AV_CODEC_ID_PCM_S16LE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(s16le, "PCM signed 16-bit little-endian",
-       AV_NE(NULL, "sw"), AV_CODEC_ID_PCM_S16LE)
+static const AVClass s8_demuxer_class = { "s8" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_s8_demuxer = { "s8", NULL_IF_CONFIG_SMALL("PCM signed 8-bit"), 0x0100, "sb", 0, &s8_demuxer_class, 0, AV_CODEC_ID_PCM_S8, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(s8, "PCM signed 8-bit",
-       "sb", AV_CODEC_ID_PCM_S8)
+static const AVClass u32be_demuxer_class = { "u32be" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_u32be_demuxer = { "u32be", NULL_IF_CONFIG_SMALL("PCM unsigned 32-bit big-endian"), 0x0100, ((void *)0), 0, &u32be_demuxer_class, 0, AV_CODEC_ID_PCM_U32BE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(u32be, "PCM unsigned 32-bit big-endian",
-       NULL, AV_CODEC_ID_PCM_U32BE)
+static const AVClass u32le_demuxer_class = { "u32le" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_u32le_demuxer = { "u32le", NULL_IF_CONFIG_SMALL("PCM unsigned 32-bit little-endian"), 0x0100, ((void *)0), 0, &u32le_demuxer_class, 0, AV_CODEC_ID_PCM_U32LE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(u32le, "PCM unsigned 32-bit little-endian",
-       NULL, AV_CODEC_ID_PCM_U32LE)
+static const AVClass u24be_demuxer_class = { "u24be" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_u24be_demuxer = { "u24be", NULL_IF_CONFIG_SMALL("PCM unsigned 24-bit big-endian"), 0x0100, ((void *)0), 0, &u24be_demuxer_class, 0, AV_CODEC_ID_PCM_U24BE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(u24be, "PCM unsigned 24-bit big-endian",
-       NULL, AV_CODEC_ID_PCM_U24BE)
+static const AVClass u24le_demuxer_class = { "u24le" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_u24le_demuxer = { "u24le", NULL_IF_CONFIG_SMALL("PCM unsigned 24-bit little-endian"), 0x0100, ((void *)0), 0, &u24le_demuxer_class, 0, AV_CODEC_ID_PCM_U24LE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(u24le, "PCM unsigned 24-bit little-endian",
-       NULL, AV_CODEC_ID_PCM_U24LE)
+static const AVClass u16be_demuxer_class = { "u16be" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_u16be_demuxer = { "u16be", NULL_IF_CONFIG_SMALL("PCM unsigned 16-bit big-endian"), 0x0100, ("uw"), 0, &u16be_demuxer_class, 0, AV_CODEC_ID_PCM_U16BE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(u16be, "PCM unsigned 16-bit big-endian",
-       AV_NE("uw", NULL), AV_CODEC_ID_PCM_U16BE)
+static const AVClass u16le_demuxer_class = { "u16le" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_u16le_demuxer = { "u16le", NULL_IF_CONFIG_SMALL("PCM unsigned 16-bit little-endian"), 0x0100, (((void *)0)), 0, &u16le_demuxer_class, 0, AV_CODEC_ID_PCM_U16LE, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(u16le, "PCM unsigned 16-bit little-endian",
-       AV_NE(NULL, "uw"), AV_CODEC_ID_PCM_U16LE)
+static const AVClass u8_demuxer_class = { "u8" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_u8_demuxer = { "u8", NULL_IF_CONFIG_SMALL("PCM unsigned 8-bit"), 0x0100, "ub", 0, &u8_demuxer_class, 0, AV_CODEC_ID_PCM_U8, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(u8, "PCM unsigned 8-bit",
-       "ub", AV_CODEC_ID_PCM_U8)
+static const AVClass alaw_demuxer_class = { "alaw" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_alaw_demuxer = { "alaw", NULL_IF_CONFIG_SMALL("PCM A-law"), 0x0100, "al", 0, &alaw_demuxer_class, 0, AV_CODEC_ID_PCM_ALAW, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };
 
-PCMDEF(alaw, "PCM A-law",
-       "al", AV_CODEC_ID_PCM_ALAW)
-
-PCMDEF(mulaw, "PCM mu-law",
-       "ul", AV_CODEC_ID_PCM_MULAW)
+static const AVClass mulaw_demuxer_class = { "mulaw" " demuxer", av_default_item_name, pcm_options, (52<<16 | 8<<8 | 0), }; AVInputFormat ff_pcm_mulaw_demuxer = { "mulaw", NULL_IF_CONFIG_SMALL("PCM mu-law"), 0x0100, "ul", 0, &mulaw_demuxer_class, 0, AV_CODEC_ID_PCM_MULAW, sizeof(PCMAudioDemuxerContext), 0, pcm_read_header, pcm_read_packet, 0, ff_pcm_read_seek, };

@@ -221,10 +221,10 @@ end:
 }
 
 AVCodec ff_pcx_decoder = {
-    .name           = "pcx",
-    .type           = AVMEDIA_TYPE_VIDEO,
-    .id             = AV_CODEC_ID_PCX,
-    .decode         = pcx_decode_frame,
-    .capabilities   = CODEC_CAP_DR1,
-    .long_name      = NULL_IF_CONFIG_SMALL("PC Paintbrush PCX image"),
+    "pcx",
+    "PC Paintbrush PCX image",
+    AVMEDIA_TYPE_VIDEO,
+    AV_CODEC_ID_PCX,
+    CODEC_CAP_DR1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pcx_decode_frame,
 };

@@ -50,29 +50,29 @@ typedef struct Parser {
     double var[VARS];
 } Parser;
 
-static const AVClass class = { "Eval", av_default_item_name, NULL, LIBAVUTIL_VERSION_INT, offsetof(Parser,log_offset), offsetof(Parser,log_ctx) };
+static const AVClass class = { "Eval", av_default_item_name, ((void *)0), (52<<16 | 8<<8 | 0), (size_t)&(((Parser *)0)->log_offset), (size_t)&(((Parser *)0)->log_ctx) };
 
 static const int8_t si_prefixes['z' - 'E' + 1] = {
-    ['y'-'E']= -24,
-    ['z'-'E']= -21,
-    ['a'-'E']= -18,
-    ['f'-'E']= -15,
-    ['p'-'E']= -12,
-    ['n'-'E']= - 9,
-    ['u'-'E']= - 6,
-    ['m'-'E']= - 3,
-    ['c'-'E']= - 2,
-    ['d'-'E']= - 1,
-    ['h'-'E']=   2,
-    ['k'-'E']=   3,
-    ['K'-'E']=   3,
-    ['M'-'E']=   6,
-    ['G'-'E']=   9,
-    ['T'-'E']=  12,
-    ['P'-'E']=  15,
-    ['E'-'E']=  18,
-    ['Z'-'E']=  21,
-    ['Y'-'E']=  24,
+    18,
+    0, 9,
+    0, 0, 0, 3,
+    0, 6,
+    0, 0, 15,
+    0, 0, 0, 12,
+    0, 0, 0, 0, 24,
+    21,
+    0, 0, 0, 0, 0, 0, -18,
+    0, - 2,
+    - 1,
+    0, -15,
+    0, 2,
+    0, 0, 3,
+    0, - 3,
+    - 9,
+    0, -12,
+    0, 0, 0, 0, - 6,
+    0, 0, 0, -24,
+    -21,
 };
 
 double av_strtod(const char *numstr, char **tail)

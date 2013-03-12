@@ -274,9 +274,9 @@ static int seg_write_packet(AVFormatContext *s, AVPacket *pkt)
     int64_t end_pts = seg->recording_time * seg->number;
     int ret;
 
-    if ((seg->has_video && st->codec->codec_type == AVMEDIA_TYPE_VIDEO) &&
+    { AVRational tmp__0 = {1, AV_TIME_BASE}; if ((seg->has_video && st->codec->codec_type == AVMEDIA_TYPE_VIDEO) &&
         av_compare_ts(pkt->pts, st->time_base,
-                      end_pts, AV_TIME_BASE_Q) >= 0 &&
+                      end_pts, tmp__0) >= 0 &&
         pkt->flags & AV_PKT_FLAG_KEY) {
 
         av_log(s, AV_LOG_DEBUG, "Next segment starts at %d %"PRId64"\n",
@@ -307,7 +307,7 @@ static int seg_write_packet(AVFormatContext *s, AVPacket *pkt)
                 }
             }
         }
-    }
+	} }
 
     ret = ff_write_chained(oc, pkt->stream_index, pkt, s);
 
@@ -353,34 +353,34 @@ fail:
 #define OFFSET(x) offsetof(SegmentContext, x)
 #define E AV_OPT_FLAG_ENCODING_PARAM
 static const AVOption options[] = {
-    { "segment_format",    "container format used for the segments",  OFFSET(format),  AV_OPT_TYPE_STRING, {.str = NULL},  0, 0,       E },
-    { "segment_time",      "segment length in seconds",               OFFSET(time),    AV_OPT_TYPE_FLOAT,  {.dbl = 2},     0, FLT_MAX, E },
-    { "segment_list",      "output the segment list",                 OFFSET(list),    AV_OPT_TYPE_STRING, {.str = NULL},  0, 0,       E },
-    { "segment_list_size", "maximum number of playlist entries",      OFFSET(size),    AV_OPT_TYPE_INT,    {.i64 = 5},     0, INT_MAX, E },
-    { "segment_list_type", "segment list format",                     OFFSET(list_type),    AV_OPT_TYPE_INT,    {.i64 = LIST_FLAT},     0, 2, E, "list_type" },
-    {   "flat",            "plain list (default)",                    0,               AV_OPT_TYPE_CONST,  {.i64 = LIST_FLAT}, 0, 0, E, "list_type" },
-    {   "hls",             "Apple HTTP Live Streaming compatible",    0,               AV_OPT_TYPE_CONST,  {.i64 = LIST_HLS},  0, 0, E, "list_type" },
-    { "segment_wrap",      "number after which the index wraps",      OFFSET(wrap),    AV_OPT_TYPE_INT,    {.i64 = 0},     0, INT_MAX, E },
-    { "individual_header_trailer", "write header/trailer to each segment", OFFSET(individual_header_trailer), AV_OPT_TYPE_INT, {.i64 = 1}, 0, 1, E },
-    { "write_header_trailer", "write a header to the first segment and a trailer to the last one", OFFSET(write_header_trailer), AV_OPT_TYPE_INT, {.i64 = 1}, 0, 1, E },
+    { "segment_format",    "container format used for the segments",  OFFSET(format),  AV_OPT_TYPE_STRING, {NULL},  0, 0,       E },
+    { "segment_time",      "segment length in seconds",               OFFSET(time),    AV_OPT_TYPE_FLOAT,  {2},     0, FLT_MAX, E },
+    { "segment_list",      "output the segment list",                 OFFSET(list),    AV_OPT_TYPE_STRING, {NULL},  0, 0,       E },
+    { "segment_list_size", "maximum number of playlist entries",      OFFSET(size),    AV_OPT_TYPE_INT,    {5},     0, INT_MAX, E },
+    { "segment_list_type", "segment list format",                     OFFSET(list_type),    AV_OPT_TYPE_INT,    {LIST_FLAT},     0, 2, E, "list_type" },
+    {   "flat",            "plain list (default)",                    0,               AV_OPT_TYPE_CONST,  {LIST_FLAT}, 0, 0, E, "list_type" },
+    {   "hls",             "Apple HTTP Live Streaming compatible",    0,               AV_OPT_TYPE_CONST,  {LIST_HLS},  0, 0, E, "list_type" },
+    { "segment_wrap",      "number after which the index wraps",      OFFSET(wrap),    AV_OPT_TYPE_INT,    {0},     0, INT_MAX, E },
+    { "individual_header_trailer", "write header/trailer to each segment", OFFSET(individual_header_trailer), AV_OPT_TYPE_INT, {1}, 0, 1, E },
+    { "write_header_trailer", "write a header to the first segment and a trailer to the last one", OFFSET(write_header_trailer), AV_OPT_TYPE_INT, {1}, 0, 1, E },
     { NULL },
 };
 
 static const AVClass seg_class = {
-    .class_name = "segment muxer",
-    .item_name  = av_default_item_name,
-    .option     = options,
-    .version    = LIBAVUTIL_VERSION_INT,
+    "segment muxer",
+    av_default_item_name,
+    options,
+    LIBAVUTIL_VERSION_INT,
 };
 
 
 AVOutputFormat ff_segment_muxer = {
-    .name           = "segment",
-    .long_name      = NULL_IF_CONFIG_SMALL("segment"),
-    .priv_data_size = sizeof(SegmentContext),
-    .flags          = AVFMT_NOFILE,
-    .write_header   = seg_write_header,
-    .write_packet   = seg_write_packet,
-    .write_trailer  = seg_write_trailer,
-    .priv_class     = &seg_class,
+    "segment",
+    NULL_IF_CONFIG_SMALL("segment"),
+    0, 0, 0, 0, 0, AVFMT_NOFILE,
+    0, &seg_class,
+    0, sizeof(SegmentContext),
+    seg_write_header,
+    seg_write_packet,
+    seg_write_trailer,
 };

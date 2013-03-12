@@ -191,7 +191,7 @@ static int avs_read_packet(AVFormatContext * s, AVPacket * pkt)
 #if FF_API_R_FRAME_RATE
                     avs->st_video->r_frame_rate =
 #endif
-                    avs->st_video->avg_frame_rate = (AVRational){avs->fps, 1};
+                    { AVRational tmp__0 = {avs->fps, 1}; avs->st_video->avg_frame_rate = tmp__0; }
                 }
                 return avs_read_video_packet(s, pkt, type, sub_type, size,
                                              palette, palette_size);
@@ -222,11 +222,11 @@ static int avs_read_close(AVFormatContext * s)
 }
 
 AVInputFormat ff_avs_demuxer = {
-    .name           = "avs",
-    .long_name      = NULL_IF_CONFIG_SMALL("AVS"),
-    .priv_data_size = sizeof(AvsFormat),
-    .read_probe     = avs_probe,
-    .read_header    = avs_read_header,
-    .read_packet    = avs_read_packet,
-    .read_close     = avs_read_close,
+    "avs",
+    NULL_IF_CONFIG_SMALL("AVS"),
+    0, 0, 0, 0, 0, 0, sizeof(AvsFormat),
+    avs_probe,
+    avs_read_header,
+    avs_read_packet,
+    avs_read_close,
 };

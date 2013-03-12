@@ -233,10 +233,10 @@ static int srt_decode_frame(AVCodecContext *avctx,
 }
 
 AVCodec ff_srt_decoder = {
-    .name         = "srt",
-    .long_name    = NULL_IF_CONFIG_SMALL("SubRip subtitle"),
-    .type         = AVMEDIA_TYPE_SUBTITLE,
-    .id           = AV_CODEC_ID_SRT,
-    .init         = ff_ass_subtitle_header_default,
-    .decode       = srt_decode_frame,
+    "srt",
+    "SubRip subtitle",
+    AVMEDIA_TYPE_SUBTITLE,
+    AV_CODEC_ID_SRT,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ff_ass_subtitle_header_default,
+    0, 0, srt_decode_frame,
 };

@@ -320,8 +320,8 @@ static int avi_write_header(AVFormatContext *s)
            && s->streams[i]->sample_aspect_ratio.num>0
            && s->streams[i]->sample_aspect_ratio.den>0){
             int vprp= ff_start_tag(pb, "vprp");
-            AVRational dar = av_mul_q(s->streams[i]->sample_aspect_ratio,
-                                      (AVRational){stream->width, stream->height});
+            AVRational tmp__0 = {stream->width, stream->height}; AVRational dar = av_mul_q(s->streams[i]->sample_aspect_ratio,
+                                      tmp__0);
             int num, den;
             av_reduce(&num, &den, dar.num, dar.den, 0xFFFF);
 
@@ -630,5 +630,5 @@ AVOutputFormat ff_avi_muxer = {
     .codec_tag         = (const AVCodecTag* const []){
         ff_codec_bmp_tags, ff_codec_wav_tags, 0
     },
-    .flags             = AVFMT_VARIABLE_FPS,
+    .flags             = 0x0400,
 };

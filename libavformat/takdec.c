@@ -173,13 +173,13 @@ static int raw_read_packet(AVFormatContext *s, AVPacket *pkt)
 }
 
 AVInputFormat ff_tak_demuxer = {
-    .name           = "tak",
-    .long_name      = NULL_IF_CONFIG_SMALL("raw TAK"),
-    .priv_data_size = sizeof(TAKDemuxContext),
-    .read_probe     = tak_probe,
-    .read_header    = tak_read_header,
-    .read_packet    = raw_read_packet,
-    .flags          = AVFMT_GENERIC_INDEX,
-    .extensions     = "tak",
-    .raw_codec_id   = AV_CODEC_ID_TAK,
+    "tak",
+    NULL_IF_CONFIG_SMALL("raw TAK"),
+    0x0100,
+    "tak",
+    0, 0, 0, AV_CODEC_ID_TAK,
+    sizeof(TAKDemuxContext),
+    tak_probe,
+    tak_read_header,
+    raw_read_packet,
 };

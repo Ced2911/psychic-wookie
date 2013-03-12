@@ -988,17 +988,19 @@ static av_cold int atrac3_decode_init(AVCodecContext *avctx)
     return 0;
 }
 
+static const enum AVSampleFormat tmp__0[] = { AV_SAMPLE_FMT_FLTP,
+                                                        AV_SAMPLE_FMT_NONE };
+
 AVCodec ff_atrac3_decoder = {
-    .name             = "atrac3",
-    .type             = AVMEDIA_TYPE_AUDIO,
-    .id               = AV_CODEC_ID_ATRAC3,
-    .priv_data_size   = sizeof(ATRAC3Context),
-    .init             = atrac3_decode_init,
-    .init_static_data = atrac3_init_static_data,
-    .close            = atrac3_decode_close,
-    .decode           = atrac3_decode_frame,
-    .capabilities     = CODEC_CAP_SUBFRAMES | CODEC_CAP_DR1,
-    .long_name        = NULL_IF_CONFIG_SMALL("Atrac 3 (Adaptive TRansform Acoustic Coding 3)"),
-    .sample_fmts      = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_FLTP,
-                                                        AV_SAMPLE_FMT_NONE },
+    "atrac3",
+    "Atrac 3 (Adaptive TRansform Acoustic Coding 3)",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_ATRAC3,
+    CODEC_CAP_SUBFRAMES | CODEC_CAP_DR1,
+    0, 0, 0, tmp__0,
+    0, 0, 0, 0, sizeof(ATRAC3Context),
+    0, 0, 0, 0, atrac3_init_static_data,
+    atrac3_decode_init,
+    0, 0, atrac3_decode_frame,
+    atrac3_decode_close,
 };

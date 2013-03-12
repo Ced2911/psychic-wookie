@@ -126,9 +126,9 @@ static int speex_packet(AVFormatContext *s, int idx)
 }
 
 const struct ogg_codec ff_speex_codec = {
-    .magic = "Speex   ",
-    .magicsize = 8,
-    .header = speex_header,
-    .packet = speex_packet,
-    .nb_header = 2,
+    "Speex   ",
+    8,
+    0, speex_header,
+    speex_packet,
+    0, 0, 2,
 };

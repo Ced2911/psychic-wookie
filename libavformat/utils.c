@@ -1046,10 +1046,10 @@ static int parse_packet(AVFormatContext *s, AVPacket *pkt, int stream_index)
         out_pkt.duration = 0;
         if (st->codec->codec_type == AVMEDIA_TYPE_AUDIO) {
             if (st->codec->sample_rate > 0) {
-                out_pkt.duration = av_rescale_q_rnd(st->parser->duration,
-                                                    (AVRational){ 1, st->codec->sample_rate },
+               { AVRational tmp__1 = { 1, st->codec->sample_rate }; out_pkt.duration = av_rescale_q_rnd(st->parser->duration,
+                                                    tmp__1,
                                                     st->time_base,
-                                                    AV_ROUND_DOWN);
+                                                    AV_ROUND_DOWN); }
             }
         } else if (st->codec->time_base.num != 0 &&
                    st->codec->time_base.den != 0) {
@@ -1816,16 +1816,16 @@ static void update_stream_timings(AVFormatContext *ic)
     for(i = 0;i < ic->nb_streams; i++) {
         st = ic->streams[i];
         if (st->start_time != AV_NOPTS_VALUE && st->time_base.den) {
-            start_time1= av_rescale_q(st->start_time, st->time_base, AV_TIME_BASE_Q);
+			{ AVRational tmp__2 = {1, AV_TIME_BASE}; start_time1= av_rescale_q(st->start_time, st->time_base, tmp__2); }
             start_time = FFMIN(start_time, start_time1);
             if (st->duration != AV_NOPTS_VALUE) {
-                end_time1 = start_time1
-                          + av_rescale_q(st->duration, st->time_base, AV_TIME_BASE_Q);
+				{ AVRational tmp__3 = {1, AV_TIME_BASE}; end_time1 = start_time1
+                          + av_rescale_q(st->duration, st->time_base, tmp__3); }
                 end_time = FFMAX(end_time, end_time1);
             }
         }
         if (st->duration != AV_NOPTS_VALUE) {
-            duration1 = av_rescale_q(st->duration, st->time_base, AV_TIME_BASE_Q);
+			{ AVRational tmp__4 = {1, AV_TIME_BASE}; duration1 = av_rescale_q(st->duration, st->time_base, tmp__4); }
             duration = FFMAX(duration, duration1);
         }
     }
@@ -1854,9 +1854,9 @@ static void fill_all_stream_timings(AVFormatContext *ic)
         st = ic->streams[i];
         if (st->start_time == AV_NOPTS_VALUE) {
             if(ic->start_time != AV_NOPTS_VALUE)
-                st->start_time = av_rescale_q(ic->start_time, AV_TIME_BASE_Q, st->time_base);
+				{ AVRational tmp__5 = {1, AV_TIME_BASE}; st->start_time = av_rescale_q(ic->start_time, tmp__5, st->time_base); }
             if(ic->duration != AV_NOPTS_VALUE)
-                st->duration = av_rescale_q(ic->duration, AV_TIME_BASE_Q, st->time_base);
+				{ AVRational tmp__6 = {1, AV_TIME_BASE}; st->duration = av_rescale_q(ic->duration, tmp__6, st->time_base); }
         }
     }
 }
@@ -2202,7 +2202,8 @@ static void compute_chapters_end(AVFormatContext *s)
     for (i = 0; i < s->nb_chapters; i++)
         if (s->chapters[i]->end == AV_NOPTS_VALUE) {
             AVChapter *ch = s->chapters[i];
-            int64_t   end = max_time ? av_rescale_q(max_time, AV_TIME_BASE_Q, ch->time_base)
+			AVRational tmp__7 = {1, 1000000};
+            int64_t   end = max_time ? av_rescale_q(max_time, tmp__7, ch->time_base)
                                      : INT64_MAX;
 
             for (j = 0; j < s->nb_chapters; j++) {
@@ -2217,7 +2218,7 @@ static void compute_chapters_end(AVFormatContext *s)
 
 static int get_std_framerate(int i){
     if(i<60*12) return i*1001;
-    else        return ((const int[]){24,30,60,12,15})[i-60*12]*1000*12;
+    else        { const int tmp__8[] = {24,30,60,12,15}; return (tmp__8)[i-60*12]*1000*12; }
 }
 
 /*
@@ -2429,11 +2430,11 @@ int avformat_find_stream_info(AVFormatContext *ic, AVDictionary **options)
             st->info->fps_last_dts_idx = st->codec_info_nb_frames;
 
             /* check max_analyze_duration */
-            if (av_rescale_q(pkt->dts - st->info->fps_first_dts, st->time_base,
-                             AV_TIME_BASE_Q) >= ic->max_analyze_duration) {
-                av_log(ic, AV_LOG_WARNING, "max_analyze_duration reached\n");
+			{ AVRational tmp__9 = {1, AV_TIME_BASE}; if (av_rescale_q(pkt->dts - st->info->fps_first_dts, st->time_base,
+                             tmp__9) >= ic->max_analyze_duration) {
+                av_log(ic, 24, "max_analyze_duration reached\n");
                 break;
-            }
+            } }
         }
 #if FF_API_R_FRAME_RATE
         {
@@ -2779,7 +2780,7 @@ AVStream *avformat_new_stream(AVFormatContext *s, AVCodec *c)
         st->pts_buffer[i]= AV_NOPTS_VALUE;
     st->reference_dts = AV_NOPTS_VALUE;
 
-    st->sample_aspect_ratio = (AVRational){0,1};
+    { AVRational tmp__10 = {0,1}; st->sample_aspect_ratio = tmp__10; }
 
 #if FF_API_R_FRAME_RATE
     st->info->last_dts      = AV_NOPTS_VALUE;

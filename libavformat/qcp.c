@@ -189,10 +189,10 @@ static int qcp_read_packet(AVFormatContext *s, AVPacket *pkt)
 }
 
 AVInputFormat ff_qcp_demuxer = {
-    .name           = "qcp",
-    .long_name      = NULL_IF_CONFIG_SMALL("QCP"),
-    .priv_data_size = sizeof(QCPContext),
-    .read_probe     = qcp_probe,
-    .read_header    = qcp_read_header,
-    .read_packet    = qcp_read_packet,
+    "qcp",
+    NULL_IF_CONFIG_SMALL("QCP"),
+    0, 0, 0, 0, 0, 0, sizeof(QCPContext),
+    qcp_probe,
+    qcp_read_header,
+    qcp_read_packet,
 };

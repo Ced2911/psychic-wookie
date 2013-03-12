@@ -42,10 +42,16 @@
 #define MULH MULH
 static inline av_const int MULH(int a, int b){
     int r;
+#ifndef _XBOX
     __asm__ ("mulhw %0, %1, %2" : "=r"(r) : "r"(a), "r"(b));
+#else
+	// CC:TODO
+	r = a * b;
+#endif
     return r;
 }
 
+#if 0
 #if !ARCH_PPC64
 static inline av_const int64_t MAC64(int64_t d, int a, int b)
 {
@@ -74,6 +80,8 @@ static inline av_const int64_t MLS64(int64_t d, int a, int b)
     return x.x;
 }
 #define MLS64(d, a, b) ((d) = MLS64(d, a, b))
+#endif
+
 #endif
 
 #endif /* AVCODEC_PPC_MATHOPS_H */

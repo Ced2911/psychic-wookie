@@ -140,10 +140,11 @@ static int r3d_read_rdvo(AVFormatContext *s, Atom *atom)
     }
 
     if (st->avg_frame_rate.num)
-        st->duration = av_rescale_q(r3d->video_offsets_count,
-                                    (AVRational){st->avg_frame_rate.den,
-                                                 st->avg_frame_rate.num},
-                                    st->time_base);
+        { AVRational tmp__0 = {st->avg_frame_rate.den,
+                                                 st->avg_frame_rate.num}; st->duration = av_rescale_q(r3d->video_offsets_count,
+                                    tmp__0,
+                                    st->time_base); }
+    ;
     av_dlog(s, "duration %"PRId64"\n", st->duration);
 
     return 0;
@@ -395,12 +396,12 @@ static int r3d_close(AVFormatContext *s)
 }
 
 AVInputFormat ff_r3d_demuxer = {
-    .name           = "r3d",
-    .long_name      = NULL_IF_CONFIG_SMALL("REDCODE R3D"),
-    .priv_data_size = sizeof(R3DContext),
-    .read_probe     = r3d_probe,
-    .read_header    = r3d_read_header,
-    .read_packet    = r3d_read_packet,
-    .read_close     = r3d_close,
-    .read_seek      = r3d_seek,
+    "r3d",
+    NULL_IF_CONFIG_SMALL("REDCODE R3D"),
+    0, 0, 0, 0, 0, 0, sizeof(R3DContext),
+    r3d_probe,
+    r3d_read_header,
+    r3d_read_packet,
+    r3d_close,
+    r3d_seek,
 };

@@ -1284,17 +1284,19 @@ static void flush(AVCodecContext *avctx)
     init_put_bits(&s->pb, s->frame_data, MAX_FRAMESIZE);
 }
 
-AVCodec ff_wmalossless_decoder = {
-    .name           = "wmalossless",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_WMALOSSLESS,
-    .priv_data_size = sizeof(WmallDecodeCtx),
-    .init           = decode_init,
-    .decode         = decode_packet,
-    .flush          = flush,
-    .capabilities   = CODEC_CAP_SUBFRAMES | CODEC_CAP_DR1 | CODEC_CAP_DELAY,
-    .long_name      = NULL_IF_CONFIG_SMALL("Windows Media Audio Lossless"),
-    .sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_S16P,
+static const enum AVSampleFormat tmp__0[] = { AV_SAMPLE_FMT_S16P,
                                                       AV_SAMPLE_FMT_S32P,
-                                                      AV_SAMPLE_FMT_NONE },
+                                                      AV_SAMPLE_FMT_NONE };
+
+AVCodec ff_wmalossless_decoder = {
+    "wmalossless",
+    "Windows Media Audio Lossless",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_WMALOSSLESS,
+    0x0100 | 0x0002 | 0x0020,
+    0, 0, 0, tmp__0,
+    0, 0, 0, 0, sizeof(WmallDecodeCtx),
+    0, 0, 0, 0, 0, decode_init,
+    0, 0, decode_packet,
+    0, flush,
 };

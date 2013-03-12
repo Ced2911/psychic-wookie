@@ -357,7 +357,7 @@ static int decode_slice(AVCodecContext *c, void *arg)
 
     if (!fs->ac) {
         if (f->version == 3 && f->minor_version > 1 || f->version > 3)
-            get_rac(&fs->c, (uint8_t[]) { 129 });
+           { uint8_t tmp__0[] = { 129 }; get_rac(&fs->c, tmp__0); }
         fs->ac_byte_count = f->version > 2 || (!x && !y) ? fs->c.bytestream - fs->c.bytestream_start - 1 : 0;
         init_get_bits(&fs->gb, fs->c.bytestream_start + fs->ac_byte_count,
                       (fs->c.bytestream_end - fs->c.bytestream_start -
@@ -394,7 +394,7 @@ static int decode_slice(AVCodecContext *c, void *arg)
     }
     if (fs->ac && f->version > 2) {
         int v;
-        get_rac(&fs->c, (uint8_t[]) { 129 });
+        { uint8_t tmp__1[] = { 129 }; get_rac(&fs->c, tmp__1); }
         v = fs->c.bytestream_end - fs->c.bytestream - 2 - 5 * f->ec;
         if (v) {
             av_log(f->avctx, AV_LOG_ERROR, "bytestream end mismatching by %d\n",
@@ -907,14 +907,14 @@ static int ffv1_decode_frame(AVCodecContext *avctx, void *data,
 }
 
 AVCodec ff_ffv1_decoder = {
-    .name           = "ffv1",
-    .type           = AVMEDIA_TYPE_VIDEO,
-    .id             = AV_CODEC_ID_FFV1,
-    .priv_data_size = sizeof(FFV1Context),
-    .init           = ffv1_decode_init,
-    .close          = ffv1_close,
-    .decode         = ffv1_decode_frame,
-    .capabilities   = CODEC_CAP_DR1 /*| CODEC_CAP_DRAW_HORIZ_BAND*/ |
-                      CODEC_CAP_SLICE_THREADS,
-    .long_name      = NULL_IF_CONFIG_SMALL("FFmpeg video codec #1"),
+    "ffv1",
+    "FFmpeg video codec #1",
+    AVMEDIA_TYPE_VIDEO,
+    AV_CODEC_ID_FFV1,
+    0x0002  |
+                      0x2000,
+    0, 0, 0, 0, 0, 0, 0, 0, sizeof(FFV1Context),
+    0, 0, 0, 0, 0, ffv1_decode_init,
+    0, 0, ffv1_decode_frame,
+    ffv1_close,
 };

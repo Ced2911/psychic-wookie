@@ -1422,53 +1422,55 @@ static av_cold int ac3_decode_end(AVCodecContext *avctx)
 
 #define OFFSET(x) offsetof(AC3DecodeContext, x)
 #define PAR (AV_OPT_FLAG_DECODING_PARAM | AV_OPT_FLAG_AUDIO_PARAM)
+
 static const AVOption options[] = {
-    { "drc_scale", "percentage of dynamic range compression to apply", OFFSET(drc_scale), AV_OPT_TYPE_FLOAT, {.dbl = 1.0}, 0.0, 1.0, PAR },
+    { "drc_scale", "percentage of dynamic range compression to apply", OFFSET(drc_scale), AV_OPT_TYPE_FLOAT, 1.0f, 0.0, 1.0, PAR },
     { NULL},
 };
 
 static const AVClass ac3_decoder_class = {
-    .class_name = "AC3 decoder",
-    .item_name  = av_default_item_name,
-    .option     = options,
-    .version    = LIBAVUTIL_VERSION_INT,
+    "AC3 decoder",
+    av_default_item_name,
+    options,
+	LIBAVUTIL_VERSION_INT,
 };
 
+static const enum AVSampleFormat tmp__0[] = { AV_SAMPLE_FMT_FLTP,
+                                                      AV_SAMPLE_FMT_NONE };
+
 AVCodec ff_ac3_decoder = {
-    .name           = "ac3",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_AC3,
-    .priv_data_size = sizeof (AC3DecodeContext),
-    .init           = ac3_decode_init,
-    .close          = ac3_decode_end,
-    .decode         = ac3_decode_frame,
-    .capabilities   = CODEC_CAP_DR1,
-    .long_name      = NULL_IF_CONFIG_SMALL("ATSC A/52A (AC-3)"),
-    .sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_FLTP,
-                                                      AV_SAMPLE_FMT_NONE },
-    .priv_class     = &ac3_decoder_class,
+    "ac3",
+    "ATSC A/52A (AC-3)",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_AC3,
+    CODEC_CAP_DR1,
+    0, 0, 0, tmp__0,
+    0, 0, &ac3_decoder_class,
+    0, sizeof (AC3DecodeContext),
+    0, 0, 0, 0, 0, ac3_decode_init,
+    0, 0, ac3_decode_frame,
+    ac3_decode_end,
 };
 
 #if CONFIG_EAC3_DECODER
 static const AVClass eac3_decoder_class = {
-    .class_name = "E-AC3 decoder",
-    .item_name  = av_default_item_name,
-    .option     = options,
-    .version    = LIBAVUTIL_VERSION_INT,
+    "E-AC3 decoder",
+    av_default_item_name,
+    options,
+	LIBAVUTIL_VERSION_INT,
 };
 
 AVCodec ff_eac3_decoder = {
-    .name           = "eac3",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_EAC3,
-    .priv_data_size = sizeof (AC3DecodeContext),
-    .init           = ac3_decode_init,
-    .close          = ac3_decode_end,
-    .decode         = ac3_decode_frame,
-    .capabilities   = CODEC_CAP_DR1,
-    .long_name      = NULL_IF_CONFIG_SMALL("ATSC A/52B (AC-3, E-AC-3)"),
-    .sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_FLTP,
-                                                      AV_SAMPLE_FMT_NONE },
-    .priv_class     = &eac3_decoder_class,
+    "eac3",
+    "ATSC A/52B (AC-3, E-AC-3)",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_EAC3,
+    0x0002,
+    0, 0, 0, tmp__0,
+    0, 0, &eac3_decoder_class,
+    0, sizeof (AC3DecodeContext),
+    0, 0, 0, 0, 0, ac3_decode_init,
+    0, 0, ac3_decode_frame,
+    ac3_decode_end,
 };
 #endif

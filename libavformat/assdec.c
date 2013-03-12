@@ -180,7 +180,7 @@ static int read_seek2(AVFormatContext *s, int stream_index,
         int64_t min_ts_diff = INT64_MAX;
         if (stream_index == -1) {
             AVRational time_base = s->streams[0]->time_base;
-            ts = av_rescale_q(ts, AV_TIME_BASE_Q, time_base);
+            { AVRational tmp__0 = {1, 1000000}; ts = av_rescale_q(ts, tmp__0, time_base); }
             min_ts = av_rescale_rnd(min_ts, time_base.den,
                                     time_base.num * (int64_t)AV_TIME_BASE,
                                     AV_ROUND_UP);
@@ -205,12 +205,12 @@ static int read_seek2(AVFormatContext *s, int stream_index,
 }
 
 AVInputFormat ff_ass_demuxer = {
-    .name           = "ass",
-    .long_name      = NULL_IF_CONFIG_SMALL("SSA (SubStation Alpha) subtitle"),
-    .priv_data_size = sizeof(ASSContext),
-    .read_probe     = probe,
-    .read_header    = read_header,
-    .read_packet    = read_packet,
-    .read_close     = read_close,
-    .read_seek2     = read_seek2,
+    "ass",
+    NULL_IF_CONFIG_SMALL("SSA (SubStation Alpha) subtitle"),
+    0, 0, 0, 0, 0, 0, sizeof(ASSContext),
+    probe,
+    read_header,
+    read_packet,
+    read_close,
+    0, 0, 0, 0, read_seek2,
 };

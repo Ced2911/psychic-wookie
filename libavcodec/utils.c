@@ -793,9 +793,13 @@ void avcodec_get_frame_defaults(AVFrame *frame)
 
     memset(frame, 0, sizeof(AVFrame));
 
+
     frame->pts                 = AV_NOPTS_VALUE;
     frame->key_frame           = 1;
-    frame->sample_aspect_ratio = (AVRational) {0, 1 };
+    {
+		AVRational aspect_ratio = {0, 1 }; 
+		frame->sample_aspect_ratio = aspect_ratio;
+	}
     frame->format              = -1; /* unknown */
     frame->extended_data       = frame->data;
 }

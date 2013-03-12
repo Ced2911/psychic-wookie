@@ -355,27 +355,27 @@ static int gif_write_trailer(AVFormatContext *s)
 #define ENC AV_OPT_FLAG_ENCODING_PARAM
 static const AVOption options[] = {
     { "loop", "Number of times to loop the output.", OFFSET(loop),
-      AV_OPT_TYPE_INT, { .i64 = 0 }, 0, 65535, ENC },
+      AV_OPT_TYPE_INT, { 0 }, 0, 65535, ENC },
     { NULL },
 };
 
 static const AVClass gif_muxer_class = {
-    .class_name = "GIF muxer",
-    .item_name  = av_default_item_name,
-    .version    = LIBAVUTIL_VERSION_INT,
-    .option     = options,
+    "GIF muxer",
+    av_default_item_name,
+    options,
+    (52<<16 | 8<<8 | 0),
 };
 
 AVOutputFormat ff_gif_muxer = {
-    .name           = "gif",
-    .long_name      = NULL_IF_CONFIG_SMALL("GIF Animation"),
-    .mime_type      = "image/gif",
-    .extensions     = "gif",
-    .priv_data_size = sizeof(GIFContext),
-    .audio_codec    = AV_CODEC_ID_NONE,
-    .video_codec    = AV_CODEC_ID_RAWVIDEO,
-    .write_header   = gif_write_header,
-    .write_packet   = gif_write_packet,
-    .write_trailer  = gif_write_trailer,
-    .priv_class     = &gif_muxer_class,
+    "gif",
+    NULL_IF_CONFIG_SMALL("GIF Animation"),
+    "image/gif",
+    "gif",
+    AV_CODEC_ID_NONE,
+    AV_CODEC_ID_RAWVIDEO,
+    0, 0, 0, &gif_muxer_class,
+    0, sizeof(GIFContext),
+    gif_write_header,
+    gif_write_packet,
+    gif_write_trailer,
 };

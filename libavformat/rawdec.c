@@ -107,7 +107,7 @@ fail:
 #define OFFSET(x) offsetof(FFRawVideoDemuxerContext, x)
 #define DEC AV_OPT_FLAG_DECODING_PARAM
 const AVOption ff_rawvideo_options[] = {
-    { "framerate", "", OFFSET(framerate), AV_OPT_TYPE_STRING, {.str = "25"}, 0, 0, DEC},
+	{ "framerate", "", OFFSET(framerate), AV_OPT_TYPE_STRING, {(intptr_t)"25"}, 0, 0, DEC},
     { NULL },
 };
 

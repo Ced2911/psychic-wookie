@@ -62,9 +62,9 @@ int av_parse_cpu_flags(const char *s)
 #define CPUFLAG_XOP      (AV_CPU_FLAG_XOP      | CPUFLAG_AVX)
 #define CPUFLAG_FMA4     (AV_CPU_FLAG_FMA4     | CPUFLAG_AVX)
     static const AVOption cpuflags_opts[] = {
-        { "flags"   , NULL, 0, AV_OPT_TYPE_FLAGS, { .i64 = 0 }, INT64_MIN, INT64_MAX, .unit = "flags" },
+        { "flags"   , ((void *)0), 0, AV_OPT_TYPE_FLAGS, { 0 }, ((int64_t)(INT64_MIN)), INT64_MAX, 0, "flags" },
 #if   ARCH_PPC
-        { "altivec" , NULL, 0, AV_OPT_TYPE_CONST, { .i64 = AV_CPU_FLAG_ALTIVEC  },    .unit = "flags" },
+        { "altivec" , ((void *)0), 0, AV_OPT_TYPE_CONST, { 0x0001  },    0, 0, 0, "flags" },
 #elif ARCH_X86
         { "mmx"     , NULL, 0, AV_OPT_TYPE_CONST, { .i64 = AV_CPU_FLAG_MMX      },    .unit = "flags" },
         { "mmxext"  , NULL, 0, AV_OPT_TYPE_CONST, { .i64 = CPUFLAG_MMXEXT       },    .unit = "flags" },
@@ -93,11 +93,11 @@ int av_parse_cpu_flags(const char *s)
 #endif
         { NULL },
     };
-    static const AVClass class = {
-        .class_name = "cpuflags",
-        .item_name  = av_default_item_name,
-        .option     = cpuflags_opts,
-        .version    = LIBAVUTIL_VERSION_INT,
+   static const AVClass class = {
+        "cpuflags",
+        av_default_item_name,
+        cpuflags_opts,
+        (52<<16 | 8<<8 | 0),
     };
 
     int flags = 0, ret;

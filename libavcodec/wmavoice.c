@@ -799,10 +799,10 @@ static void postfilter(WMAVoiceContext *s, const float *synth,
         /* remove ultra-low frequency DC noise / highpass filter;
          * coefficients are identical to those used in SIPR decoding,
          * and very closely resemble those used in AMR-NB decoding. */
-        ff_acelp_apply_order_2_transfer_function(samples, samples,
-            (const float[2]) { -1.99997,      1.0 },
-            (const float[2]) { -1.9330735188, 0.93589198496 },
-            0.93980580475, s->dcf_mem, size);
+        { const float tmp__0[2] = { -1.99997,      1.0 }; { const float tmp__1[2] = { -1.9330735188, 0.93589198496 }; ff_acelp_apply_order_2_transfer_function(samples, samples,
+            tmp__0,
+            tmp__1,
+            0.93980580475, s->dcf_mem, size); } }
     }
 }
 /**
@@ -2046,14 +2046,14 @@ static av_cold void wmavoice_flush(AVCodecContext *ctx)
 }
 
 AVCodec ff_wmavoice_decoder = {
-    .name           = "wmavoice",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_WMAVOICE,
-    .priv_data_size = sizeof(WMAVoiceContext),
-    .init           = wmavoice_decode_init,
-    .close          = wmavoice_decode_end,
-    .decode         = wmavoice_decode_packet,
-    .capabilities   = CODEC_CAP_SUBFRAMES | CODEC_CAP_DR1,
-    .flush          = wmavoice_flush,
-    .long_name      = NULL_IF_CONFIG_SMALL("Windows Media Audio Voice"),
+    "wmavoice",
+    "Windows Media Audio Voice",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_WMAVOICE,
+    CODEC_CAP_SUBFRAMES | CODEC_CAP_DR1,
+    0, 0, 0, 0, 0, 0, 0, 0, sizeof(WMAVoiceContext),
+    0, 0, 0, 0, 0, wmavoice_decode_init,
+    0, 0, wmavoice_decode_packet,
+    wmavoice_decode_end,
+    wmavoice_flush,
 };

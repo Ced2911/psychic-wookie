@@ -1297,18 +1297,20 @@ static int svq3_decode_end(AVCodecContext *avctx)
     return 0;
 }
 
+static const enum AVPixelFormat tmp__0[] = { AV_PIX_FMT_YUVJ420P,
+                                                     AV_PIX_FMT_NONE};
+
 AVCodec ff_svq3_decoder = {
-    .name           = "svq3",
-    .type           = AVMEDIA_TYPE_VIDEO,
-    .id             = AV_CODEC_ID_SVQ3,
-    .priv_data_size = sizeof(SVQ3Context),
-    .init           = svq3_decode_init,
-    .close          = svq3_decode_end,
-    .decode         = svq3_decode_frame,
-    .capabilities   = CODEC_CAP_DRAW_HORIZ_BAND |
-                      CODEC_CAP_DR1             |
-                      CODEC_CAP_DELAY,
-    .long_name      = NULL_IF_CONFIG_SMALL("Sorenson Vector Quantizer 3 / Sorenson Video 3 / SVQ3"),
-    .pix_fmts       = (const enum AVPixelFormat[]) { AV_PIX_FMT_YUVJ420P,
-                                                     AV_PIX_FMT_NONE},
+    "svq3",
+    "Sorenson Vector Quantizer 3 / Sorenson Video 3 / SVQ3",
+    AVMEDIA_TYPE_VIDEO,
+    AV_CODEC_ID_SVQ3,
+    0x0001 |
+                      0x0002             |
+                      0x0020,
+    0, tmp__0,
+    0, 0, 0, 0, 0, 0, sizeof(SVQ3Context),
+    0, 0, 0, 0, 0, svq3_decode_init,
+    0, 0, svq3_decode_frame,
+    svq3_decode_end,
 };

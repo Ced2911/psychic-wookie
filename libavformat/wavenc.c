@@ -192,29 +192,31 @@ static int wav_write_trailer(AVFormatContext *s)
 #define OFFSET(x) offsetof(WAVMuxContext, x)
 #define ENC AV_OPT_FLAG_ENCODING_PARAM
 static const AVOption options[] = {
-    { "write_bext", "Write BEXT chunk.", OFFSET(write_bext), AV_OPT_TYPE_INT, { .i64 = 0 }, 0, 1, ENC },
+    { "write_bext", "Write BEXT chunk.", OFFSET(write_bext), AV_OPT_TYPE_INT, { 0 }, 0, 1, ENC },
     { NULL },
 };
 
 static const AVClass wav_muxer_class = {
-    .class_name = "WAV muxer",
-    .item_name  = av_default_item_name,
-    .option     = options,
-    .version    = LIBAVUTIL_VERSION_INT,
+    "WAV muxer",
+    av_default_item_name,
+    options,
+    LIBAVUTIL_VERSION_INT,
 };
 
+static const AVCodecTag* const tmp__0[] = { ff_codec_wav_tags, 0 };
+
 AVOutputFormat ff_wav_muxer = {
-    .name              = "wav",
-    .long_name         = NULL_IF_CONFIG_SMALL("WAV / WAVE (Waveform Audio)"),
-    .mime_type         = "audio/x-wav",
-    .extensions        = "wav",
-    .priv_data_size    = sizeof(WAVMuxContext),
-    .audio_codec       = AV_CODEC_ID_PCM_S16LE,
-    .video_codec       = AV_CODEC_ID_NONE,
-    .write_header      = wav_write_header,
-    .write_packet      = wav_write_packet,
-    .write_trailer     = wav_write_trailer,
-    .flags             = AVFMT_TS_NONSTRICT,
-    .codec_tag         = (const AVCodecTag* const []){ ff_codec_wav_tags, 0 },
-    .priv_class        = &wav_muxer_class,
+    "wav",
+    NULL_IF_CONFIG_SMALL("WAV / WAVE (Waveform Audio)"),
+    "audio/x-wav",
+    "wav",
+    AV_CODEC_ID_PCM_S16LE,
+    AV_CODEC_ID_NONE,
+    0, 0x20000,
+    tmp__0,
+    &wav_muxer_class,
+    0, sizeof(WAVMuxContext),
+    wav_write_header,
+    wav_write_packet,
+    wav_write_trailer,
 };

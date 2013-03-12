@@ -1618,17 +1618,18 @@ static void flush(AVCodecContext *avctx)
 /**
  *@brief wmapro decoder
  */
+static const enum AVSampleFormat tmp__0[] = { AV_SAMPLE_FMT_FLTP,
+                                                      AV_SAMPLE_FMT_NONE };
 AVCodec ff_wmapro_decoder = {
-    .name           = "wmapro",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_WMAPRO,
-    .priv_data_size = sizeof(WMAProDecodeCtx),
-    .init           = decode_init,
-    .close          = decode_end,
-    .decode         = decode_packet,
-    .capabilities   = CODEC_CAP_SUBFRAMES | CODEC_CAP_DR1,
-    .flush          = flush,
-    .long_name      = NULL_IF_CONFIG_SMALL("Windows Media Audio 9 Professional"),
-    .sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_FLTP,
-                                                      AV_SAMPLE_FMT_NONE },
+    "wmapro",
+    "Windows Media Audio 9 Professional",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_WMAPRO,
+    0x0100 | 0x0002,
+    0, 0, 0, tmp__0,
+    0, 0, 0, 0, sizeof(WMAProDecodeCtx),
+    0, 0, 0, 0, 0, decode_init,
+    0, 0, decode_packet,
+    decode_end,
+    flush,
 };

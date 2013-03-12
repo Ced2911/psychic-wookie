@@ -36,7 +36,11 @@
  * only implement return values as necessary. */
 
 #define WIN32_LEAN_AND_MEAN
+#ifdef _XBOX
+#include <xtl.h>
+#else
 #include <windows.h>
+#endif
 #include <process.h>
 
 #include "libavutil/internal.h"
@@ -256,6 +260,7 @@ static void pthread_cond_signal(pthread_cond_t *cond)
 
 static void w32thread_init(void)
 {
+#ifndef XBOX
     HANDLE kernel_dll = GetModuleHandle(TEXT("kernel32.dll"));
     /* if one is available, then they should all be available */
     cond_init      =
@@ -266,6 +271,12 @@ static void w32thread_init(void)
         (void*)GetProcAddress(kernel_dll, "WakeConditionVariable");
     cond_wait      =
         (void*)GetProcAddress(kernel_dll, "SleepConditionVariableCS");
+#else
+	cond_init = NULL;
+	cond_signal = NULL;
+	cond_broadcast = NULL;
+	cond_wait = NULL;
+#endif
 }
 
 #endif /* AVCODEC_W32PTHREADS_H */

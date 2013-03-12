@@ -76,17 +76,17 @@ typedef struct {
 
 static const AVOption options[] = {
     { "pagesize", "preferred page size in bytes (deprecated)",
-        OFFSET(pref_size), AV_OPT_TYPE_INT, { .i64 = 0 }, 0, MAX_PAGE_SIZE, PARAM },
+        OFFSET(pref_size), AV_OPT_TYPE_INT, { 0 }, 0, MAX_PAGE_SIZE, PARAM },
     { "page_duration", "preferred page duration, in microseconds",
-        OFFSET(pref_duration), AV_OPT_TYPE_INT, { .i64 = 1000000 }, 0, INT64_MAX, PARAM },
+        OFFSET(pref_duration), AV_OPT_TYPE_INT, { 1000000 }, 0, INT64_MAX, PARAM },
     { NULL },
 };
 
 static const AVClass ogg_muxer_class = {
-    .class_name = "Ogg muxer",
-    .item_name  = av_default_item_name,
-    .option     = options,
-    .version    = LIBAVUTIL_VERSION_INT,
+	"Ogg muxer",
+	av_default_item_name,
+	options,
+	LIBAVUTIL_VERSION_INT,
 };
 
 
@@ -155,10 +155,10 @@ static int ogg_compare_granule(AVFormatContext *s, OGGPage *next, OGGPage *page)
     if (next->granule == -1 || page->granule == -1)
         return 0;
 
-    next_granule = av_rescale_q(ogg_granule_to_timestamp(st2->priv_data, next->granule),
-                                st2->time_base, AV_TIME_BASE_Q);
-    cur_granule  = av_rescale_q(ogg_granule_to_timestamp(st->priv_data, page->granule),
-                                st ->time_base, AV_TIME_BASE_Q);
+	{ AVRational tmp__0 = {1, AV_TIME_BASE}; next_granule = av_rescale_q(ogg_granule_to_timestamp(st2->priv_data, next->granule),
+                                st2->time_base, tmp__0); }
+    { AVRational tmp__1 = {1, AV_TIME_BASE}; cur_granule  = av_rescale_q(ogg_granule_to_timestamp(st->priv_data, page->granule),
+                                st ->time_base, tmp__1); }
     return next_granule > cur_granule;
 }
 
@@ -246,10 +246,10 @@ static int ogg_buffer_data(AVFormatContext *s, AVStream *st,
         if (!header) {
             AVStream *st = s->streams[page->stream_index];
 
-            int64_t start = av_rescale_q(page->start_granule, st->time_base,
-                                         AV_TIME_BASE_Q);
-            int64_t next  = av_rescale_q(page->granule, st->time_base,
-                                         AV_TIME_BASE_Q);
+			AVRational tmp__2 = {1, AV_TIME_BASE}; int64_t start = av_rescale_q(page->start_granule, st->time_base,
+                                         tmp__2);
+            AVRational tmp__3 = {1, AV_TIME_BASE}; int64_t next  = av_rescale_q(page->granule, st->time_base,
+                                         tmp__3);
 
             if (page->segments_count == 255 ||
                 (ogg->pref_size     > 0 && page->size   >= ogg->pref_size) ||
@@ -562,7 +562,7 @@ static int ogg_write_packet(AVFormatContext *s, AVPacket *pkt)
         }
         granule = (oggstream->last_kf_pts<<oggstream->kfgshift) | pframe_count;
     } else if (st->codec->codec_id == AV_CODEC_ID_OPUS)
-        granule = pkt->pts + pkt->duration + av_rescale_q(st->codec->delay, (AVRational){ 1, st->codec->sample_rate }, st->time_base);
+		{ AVRational tmp__4 = { 1, st->codec->sample_rate }; granule = pkt->pts + pkt->duration + av_rescale_q(st->codec->delay, tmp__4, st->time_base); }
     else
         granule = pkt->pts + pkt->duration;
 
@@ -609,15 +609,15 @@ static int ogg_write_trailer(AVFormatContext *s)
 }
 
 AVOutputFormat ff_ogg_muxer = {
-    .name              = "ogg",
-    .long_name         = NULL_IF_CONFIG_SMALL("Ogg"),
-    .mime_type         = "application/ogg",
-    .extensions        = "ogg,ogv,spx,opus",
-    .priv_data_size    = sizeof(OGGContext),
-    .audio_codec       = AV_CODEC_ID_FLAC,
-    .video_codec       = AV_CODEC_ID_THEORA,
-    .write_header      = ogg_write_header,
-    .write_packet      = ogg_write_packet,
-    .write_trailer     = ogg_write_trailer,
-    .priv_class        = &ogg_muxer_class,
+    "ogg",
+    NULL_IF_CONFIG_SMALL("Ogg"),
+    "application/ogg",
+    "ogg,ogv,spx,opus",
+    AV_CODEC_ID_FLAC,
+    AV_CODEC_ID_THEORA,
+    0, 0, 0, &ogg_muxer_class,
+    0, sizeof(OGGContext),
+    ogg_write_header,
+    ogg_write_packet,
+    ogg_write_trailer,
 };

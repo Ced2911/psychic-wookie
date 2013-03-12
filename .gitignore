@@ -49,3 +49,16 @@
 /tools/probetest
 /tools/qt-faststart
 /tools/trasher
+
+*.i
+*.suo
+*.sdf
+*.opensdf
+
+*/ipch/
+*.ipch
+*.tlog
+*.unsuccessfulbuild
+*.lastbuildstate
+BuildLog.txt
+

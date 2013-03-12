@@ -39,18 +39,18 @@ typedef struct SRTPProtoContext {
 #define D AV_OPT_FLAG_DECODING_PARAM
 #define E AV_OPT_FLAG_ENCODING_PARAM
 static const AVOption options[] = {
-    { "srtp_out_suite", "", offsetof(SRTPProtoContext, out_suite), AV_OPT_TYPE_STRING, { .str = NULL }, 0, 0, E },
-    { "srtp_out_params", "", offsetof(SRTPProtoContext, out_params), AV_OPT_TYPE_STRING, { .str = NULL }, 0, 0, E },
-    { "srtp_in_suite", "", offsetof(SRTPProtoContext, in_suite), AV_OPT_TYPE_STRING, { .str = NULL }, 0, 0, E },
-    { "srtp_in_params", "", offsetof(SRTPProtoContext, in_params), AV_OPT_TYPE_STRING, { .str = NULL }, 0, 0, E },
+    { "srtp_out_suite", "", offsetof(SRTPProtoContext, out_suite), AV_OPT_TYPE_STRING, { NULL }, 0, 0, E },
+    { "srtp_out_params", "", offsetof(SRTPProtoContext, out_params), AV_OPT_TYPE_STRING, { NULL }, 0, 0, E },
+    { "srtp_in_suite", "", offsetof(SRTPProtoContext, in_suite), AV_OPT_TYPE_STRING, { NULL }, 0, 0, E },
+    { "srtp_in_params", "", offsetof(SRTPProtoContext, in_params), AV_OPT_TYPE_STRING, { NULL }, 0, 0, E },
     { NULL }
 };
 
 static const AVClass srtp_context_class = {
-    .class_name     = "srtp",
-    .item_name      = av_default_item_name,
-    .option         = options,
-    .version        = LIBAVUTIL_VERSION_INT,
+	"srtp",
+	av_default_item_name,
+	options,
+	LIBAVUTIL_VERSION_INT,
 };
 
 static int srtp_close(URLContext *h)
@@ -131,14 +131,14 @@ static int srtp_get_multi_file_handle(URLContext *h, int **handles,
 }
 
 URLProtocol ff_srtp_protocol = {
-    .name                      = "srtp",
-    .url_open                  = srtp_open,
-    .url_read                  = srtp_read,
-    .url_write                 = srtp_write,
-    .url_close                 = srtp_close,
-    .url_get_file_handle       = srtp_get_file_handle,
-    .url_get_multi_file_handle = srtp_get_multi_file_handle,
-    .priv_data_size            = sizeof(SRTPProtoContext),
-    .priv_data_class           = &srtp_context_class,
-    .flags                     = URL_PROTOCOL_FLAG_NETWORK,
+    "srtp",
+    srtp_open,
+    0, srtp_read,
+    srtp_write,
+    0, srtp_close,
+    0, 0, 0, srtp_get_file_handle,
+    srtp_get_multi_file_handle,
+    0, sizeof(SRTPProtoContext),
+    &srtp_context_class,
+    URL_PROTOCOL_FLAG_NETWORK,
 };

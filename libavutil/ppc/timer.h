@@ -27,6 +27,7 @@
 
 static inline uint64_t read_time(void)
 {
+#ifndef _XBOX
     uint32_t tbu, tbl, temp;
 
      /* from section 2.2.1 of the 32-bit PowerPC PEM */
@@ -42,6 +43,9 @@ static inline uint64_t read_time(void)
      : "cc");
 
      return (((uint64_t)tbu)<<32) | (uint64_t)tbl;
+#else
+	return __mftb();
+#endif
 }
 
 #endif /* AVUTIL_PPC_TIMER_H */

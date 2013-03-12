@@ -328,17 +328,19 @@ static av_cold int mpc7_decode_close(AVCodecContext *avctx)
     return 0;
 }
 
+static const enum AVSampleFormat tmp__0[] = { AV_SAMPLE_FMT_S16P,
+                                                      AV_SAMPLE_FMT_NONE };
+
 AVCodec ff_mpc7_decoder = {
-    .name           = "mpc7",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_MUSEPACK7,
-    .priv_data_size = sizeof(MPCContext),
-    .init           = mpc7_decode_init,
-    .close          = mpc7_decode_close,
-    .decode         = mpc7_decode_frame,
-    .flush          = mpc7_decode_flush,
-    .capabilities   = CODEC_CAP_DR1,
-    .long_name      = NULL_IF_CONFIG_SMALL("Musepack SV7"),
-    .sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_S16P,
-                                                      AV_SAMPLE_FMT_NONE },
+    "mpc7",
+    "Musepack SV7",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_MUSEPACK7,
+    0x0002,
+    0, 0, 0, tmp__0,
+    0, 0, 0, 0, sizeof(MPCContext),
+    0, 0, 0, 0, 0, mpc7_decode_init,
+    0, 0, mpc7_decode_frame,
+    mpc7_decode_close,
+    mpc7_decode_flush,
 };

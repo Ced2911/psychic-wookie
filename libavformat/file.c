@@ -44,15 +44,15 @@ typedef struct FileContext {
 } FileContext;
 
 static const AVOption file_options[] = {
-    { "truncate", "Truncate existing files on write", offsetof(FileContext, trunc), AV_OPT_TYPE_INT, { .i64 = 1 }, 0, 1, AV_OPT_FLAG_ENCODING_PARAM },
+    { "truncate", "Truncate existing files on write", offsetof(FileContext, trunc), AV_OPT_TYPE_INT, { 1 }, 0, 1, AV_OPT_FLAG_ENCODING_PARAM },
     { NULL }
 };
 
 static const AVClass file_class = {
-    .class_name = "file",
-    .item_name  = av_default_item_name,
-    .option     = file_options,
-    .version    = LIBAVUTIL_VERSION_INT,
+	"file",
+	 av_default_item_name,
+	file_options,
+	LIBAVUTIL_VERSION_INT,
 };
 
 static int file_read(URLContext *h, unsigned char *buf, int size)
@@ -142,16 +142,23 @@ static int file_close(URLContext *h)
 }
 
 URLProtocol ff_file_protocol = {
-    .name                = "file",
-    .url_open            = file_open,
-    .url_read            = file_read,
-    .url_write           = file_write,
-    .url_seek            = file_seek,
-    .url_close           = file_close,
-    .url_get_file_handle = file_get_handle,
-    .url_check           = file_check,
-    .priv_data_size      = sizeof(FileContext),
-    .priv_data_class     = &file_class,
+	"file",
+	file_open,
+	NULL,
+	file_read,
+	file_write,
+	file_seek,
+	file_close,
+	NULL,
+	NULL,
+	NULL,
+	file_get_handle,
+	NULL,
+	NULL,
+	sizeof(FileContext),
+	&file_class,
+	0,
+	file_check
 };
 
 #endif /* CONFIG_FILE_PROTOCOL */

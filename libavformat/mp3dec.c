@@ -152,8 +152,8 @@ static int mp3_parse_vbr_tags(AVFormatContext *s, AVStream *st, int64_t base)
         if(v & XING_FLAG_SIZE)
             size = avio_rb32(s->pb);
         if (v & XING_FLAG_TOC && frames)
-            read_xing_toc(s, size, av_rescale_q(frames, (AVRational){spf, c.sample_rate},
-                                    st->time_base));
+            { AVRational tmp__0 = {spf, c.sample_rate}; read_xing_toc(s, size, av_rescale_q(frames, tmp__0,
+                                    st->time_base)); }
     }
 
     /* Check for VBRI tag (always 32 bytes after end of mpegaudio header) */
@@ -176,8 +176,8 @@ static int mp3_parse_vbr_tags(AVFormatContext *s, AVStream *st, int64_t base)
     avio_seek(s->pb, base + vbrtag_size, SEEK_SET);
 
     if(frames)
-        st->duration = av_rescale_q(frames, (AVRational){spf, c.sample_rate},
-                                    st->time_base);
+        { AVRational tmp__1 = {spf, c.sample_rate}; st->duration = av_rescale_q(frames, tmp__1,
+                                    st->time_base); }
     if (size && frames && !is_cbr)
         st->codec->bit_rate = av_rescale(size, 8 * c.sample_rate, frames * (int64_t)spf);
 
@@ -264,12 +264,12 @@ static int mp3_seek(AVFormatContext *s, int stream_index, int64_t timestamp,
 }
 
 AVInputFormat ff_mp3_demuxer = {
-    .name           = "mp3",
-    .long_name      = NULL_IF_CONFIG_SMALL("MP2/3 (MPEG audio layer 2/3)"),
-    .read_probe     = mp3_read_probe,
-    .read_header    = mp3_read_header,
-    .read_packet    = mp3_read_packet,
-    .read_seek      = mp3_seek,
-    .flags          = AVFMT_GENERIC_INDEX,
-    .extensions     = "mp2,mp3,m2a", /* XXX: use probe */
+    "mp3",
+    NULL_IF_CONFIG_SMALL("MP2/3 (MPEG audio layer 2/3)"),
+    0x0100,
+    "mp2,mp3,m2a",
+    0, 0, 0, 0, 0, mp3_read_probe,
+    mp3_read_header,
+    mp3_read_packet,
+    0, mp3_seek,
 };

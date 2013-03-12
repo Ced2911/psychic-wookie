@@ -86,15 +86,15 @@ old_flac_header (AVFormatContext * s, int idx)
 }
 
 const struct ogg_codec ff_flac_codec = {
-    .magic = "\177FLAC",
-    .magicsize = 5,
-    .header = flac_header,
-    .nb_header = 2,
+    "\177FLAC",
+    5,
+    0, flac_header,
+    0, 0, 0, 2,
 };
 
 const struct ogg_codec ff_old_flac_codec = {
-    .magic = "fLaC",
-    .magicsize = 4,
-    .header = old_flac_header,
-    .nb_header = 0,
+    "fLaC",
+    4,
+    0, old_flac_header,
+    0, 0, 0, 0,
 };

@@ -290,11 +290,11 @@ static int img_read_packet(AVFormatContext *s1, AVPacket *pkt)
 #define OFFSET(x) offsetof(VideoDemuxData, x)
 #define DEC AV_OPT_FLAG_DECODING_PARAM
 static const AVOption options[] = {
-    { "pixel_format", "",                             OFFSET(pixel_format), AV_OPT_TYPE_STRING, { .str = NULL }, 0, 0,       DEC },
-    { "video_size",   "",                             OFFSET(video_size),   AV_OPT_TYPE_STRING, { .str = NULL }, 0, 0,       DEC },
-    { "framerate",    "",                             OFFSET(framerate),    AV_OPT_TYPE_STRING, { .str = "25" }, 0, 0,       DEC },
-    { "loop",         "",                             OFFSET(loop),         AV_OPT_TYPE_INT,    { .i64 = 0    }, 0, 1,       DEC },
-    { "start_number", "first number in the sequence", OFFSET(start_number), AV_OPT_TYPE_INT,    { .i64 = 1    }, 1, INT_MAX, DEC },
+    { "pixel_format", "",                             OFFSET(pixel_format), AV_OPT_TYPE_STRING, {(intptr_t) NULL }, 0, 0,       DEC },
+    { "video_size",   "",                             OFFSET(video_size),   AV_OPT_TYPE_STRING, {(intptr_t) NULL }, 0, 0,       DEC },
+    { "framerate",    "",                             OFFSET(framerate),    AV_OPT_TYPE_STRING, {(intptr_t) "25" }, 0, 0,       DEC },
+    { "loop",         "",                             OFFSET(loop),         AV_OPT_TYPE_INT,    {(intptr_t) 0    }, 0, 1,       DEC },
+    { "start_number", "first number in the sequence", OFFSET(start_number), AV_OPT_TYPE_INT,    {(intptr_t) 1    }, 1, INT_MAX, DEC },
     { NULL },
 };
 

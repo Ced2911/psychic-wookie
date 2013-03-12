@@ -560,19 +560,21 @@ static av_cold int flac_decode_close(AVCodecContext *avctx)
     return 0;
 }
 
-AVCodec ff_flac_decoder = {
-    .name           = "flac",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_FLAC,
-    .priv_data_size = sizeof(FLACContext),
-    .init           = flac_decode_init,
-    .close          = flac_decode_close,
-    .decode         = flac_decode_frame,
-    .capabilities   = CODEC_CAP_DR1,
-    .long_name      = NULL_IF_CONFIG_SMALL("FLAC (Free Lossless Audio Codec)"),
-    .sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_S16,
+static const enum AVSampleFormat tmp__0[] = { AV_SAMPLE_FMT_S16,
                                                       AV_SAMPLE_FMT_S16P,
                                                       AV_SAMPLE_FMT_S32,
                                                       AV_SAMPLE_FMT_S32P,
-                                                      -1 },
+                                                      -1 };
+
+AVCodec ff_flac_decoder = {
+    "flac",
+    "FLAC (Free Lossless Audio Codec)",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_FLAC,
+    0x0002,
+    0, 0, 0, tmp__0,
+    0, 0, 0, 0, sizeof(FLACContext),
+    0, 0, 0, 0, 0, flac_decode_init,
+    0, 0, flac_decode_frame,
+    flac_decode_close,
 };

@@ -418,8 +418,8 @@ static int nsv_parse_NSVs_header(AVFormatContext *s)
     av_dlog(s, "NSV NSVs framerate code %2x\n", i);
     if(i&0x80) { /* odd way of giving native framerates from docs */
         int t=(i & 0x7F)>>2;
-        if(t<16) framerate = (AVRational){1, t+1};
-        else     framerate = (AVRational){t-15, 1};
+        if(t<16) { AVRational tmp__0 = {1, t+1}; framerate = tmp__0; }
+        else     { AVRational tmp__1 = {t-15, 1}; framerate = tmp__1; }
 
         if(i&1){
             framerate.num *= 1000;
@@ -431,7 +431,7 @@ static int nsv_parse_NSVs_header(AVFormatContext *s)
         else              framerate.num *= 30;
     }
     else
-        framerate= (AVRational){i, 1};
+    { AVRational tmp__2 = {i, 1}; framerate= tmp__2; }
 
     nsv->avsync = avio_rl16(pb);
     nsv->framerate = framerate;
@@ -796,12 +796,12 @@ static int nsv_probe(AVProbeData *p)
 }
 
 AVInputFormat ff_nsv_demuxer = {
-    .name           = "nsv",
-    .long_name      = NULL_IF_CONFIG_SMALL("Nullsoft Streaming Video"),
-    .priv_data_size = sizeof(NSVContext),
-    .read_probe     = nsv_probe,
-    .read_header    = nsv_read_header,
-    .read_packet    = nsv_read_packet,
-    .read_close     = nsv_read_close,
-    .read_seek      = nsv_read_seek,
+    "nsv",
+    NULL_IF_CONFIG_SMALL("Nullsoft Streaming Video"),
+    0, 0, 0, 0, 0, 0, sizeof(NSVContext),
+    nsv_probe,
+    nsv_read_header,
+    nsv_read_packet,
+    nsv_read_close,
+    nsv_read_seek,
 };

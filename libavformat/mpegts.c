@@ -129,16 +129,16 @@ struct MpegTSContext {
 };
 
 static const AVOption options[] = {
-    {"compute_pcr", "Compute exact PCR for each transport stream packet.", offsetof(MpegTSContext, mpeg2ts_compute_pcr), AV_OPT_TYPE_INT,
-     {.i64 = 0}, 0, 1, AV_OPT_FLAG_DECODING_PARAM },
-    { NULL },
+    {"compute_pcr", "Compute exact PCR for each transport stream packet.", (size_t)&(((MpegTSContext *)0)->mpeg2ts_compute_pcr), AV_OPT_TYPE_INT,
+     {0}, 0, 1, 2 },
+    { ((void *)0) },
 };
 
 static const AVClass mpegtsraw_class = {
-    .class_name = "mpegtsraw demuxer",
-    .item_name  = av_default_item_name,
-    .option     = options,
-    .version    = LIBAVUTIL_VERSION_INT,
+    "mpegtsraw demuxer",
+    av_default_item_name,
+    options,
+	LIBAVUTIL_VERSION_INT,
 };
 
 /* TS stream handling */
@@ -2161,27 +2161,27 @@ void ff_mpegts_parse_close(MpegTSContext *ts)
 }
 
 AVInputFormat ff_mpegts_demuxer = {
-    .name           = "mpegts",
-    .long_name      = NULL_IF_CONFIG_SMALL("MPEG-TS (MPEG-2 Transport Stream)"),
-    .priv_data_size = sizeof(MpegTSContext),
-    .read_probe     = mpegts_probe,
-    .read_header    = mpegts_read_header,
-    .read_packet    = mpegts_read_packet,
-    .read_close     = mpegts_read_close,
-    .read_seek      = read_seek,
-    .read_timestamp = mpegts_get_pcr,
-    .flags          = AVFMT_SHOW_IDS | AVFMT_TS_DISCONT,
+    "mpegts",
+    NULL_IF_CONFIG_SMALL("MPEG-TS (MPEG-2 Transport Stream)"),
+    AVFMT_SHOW_IDS | AVFMT_TS_DISCONT,
+    0, 0, 0, 0, 0, sizeof(MpegTSContext),
+    mpegts_probe,
+    mpegts_read_header,
+    mpegts_read_packet,
+    mpegts_read_close,
+    read_seek,
+    mpegts_get_pcr,
 };
 
 AVInputFormat ff_mpegtsraw_demuxer = {
-    .name           = "mpegtsraw",
-    .long_name      = NULL_IF_CONFIG_SMALL("raw MPEG-TS (MPEG-2 Transport Stream)"),
-    .priv_data_size = sizeof(MpegTSContext),
-    .read_header    = mpegts_read_header,
-    .read_packet    = mpegts_raw_read_packet,
-    .read_close     = mpegts_read_close,
-    .read_seek      = read_seek,
-    .read_timestamp = mpegts_get_pcr,
-    .flags          = AVFMT_SHOW_IDS | AVFMT_TS_DISCONT,
-    .priv_class     = &mpegtsraw_class,
+    "mpegtsraw",
+    NULL_IF_CONFIG_SMALL("raw MPEG-TS (MPEG-2 Transport Stream)"),
+    AVFMT_SHOW_IDS | AVFMT_TS_DISCONT,
+    0, 0, &mpegtsraw_class,
+    0, 0, sizeof(MpegTSContext),
+    0, mpegts_read_header,
+    mpegts_raw_read_packet,
+    mpegts_read_close,
+    read_seek,
+    mpegts_get_pcr,
 };

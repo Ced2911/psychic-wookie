@@ -230,23 +230,23 @@ static int decrypt_init(AVFormatContext *s, ID3v2ExtraMeta *em, uint8_t *header)
     if (s->keylen > 0) {
         kset(s, s->key, s->key, s->keylen);
     }
-    if (!memcmp(oc->r_val, (const uint8_t[8]){0}, 8) ||
+    { const uint8_t tmp__0[8] = {0}; if (!memcmp(oc->r_val, tmp__0, 8) ||
         rprobe(s, gdata, oc->r_val) < 0 &&
         nprobe(s, gdata, geob->datasize, oc->n_val) < 0) {
         int i;
-        for (i = 0; i < FF_ARRAY_ELEMS(leaf_table); i += 2) {
+        for (i = 0; i < (sizeof(leaf_table) / sizeof((leaf_table)[0])); i += 2) {
             uint8_t buf[16];
-            AV_WL64(buf, leaf_table[i]);
-            AV_WL64(&buf[8], leaf_table[i+1]);
+            do { ((uint8_t*)(buf))[0] = (leaf_table[i]); ((uint8_t*)(buf))[1] = (leaf_table[i])>>8; ((uint8_t*)(buf))[2] = (leaf_table[i])>>16; ((uint8_t*)(buf))[3] = (leaf_table[i])>>24; ((uint8_t*)(buf))[4] = (leaf_table[i])>>32; ((uint8_t*)(buf))[5] = (leaf_table[i])>>40; ((uint8_t*)(buf))[6] = (leaf_table[i])>>48; ((uint8_t*)(buf))[7] = (leaf_table[i])>>56; } while(0);
+            do { ((uint8_t*)(&buf[8]))[0] = (leaf_table[i+1]); ((uint8_t*)(&buf[8]))[1] = (leaf_table[i+1])>>8; ((uint8_t*)(&buf[8]))[2] = (leaf_table[i+1])>>16; ((uint8_t*)(&buf[8]))[3] = (leaf_table[i+1])>>24; ((uint8_t*)(&buf[8]))[4] = (leaf_table[i+1])>>32; ((uint8_t*)(&buf[8]))[5] = (leaf_table[i+1])>>40; ((uint8_t*)(&buf[8]))[6] = (leaf_table[i+1])>>48; ((uint8_t*)(&buf[8]))[7] = (leaf_table[i+1])>>56; } while(0);
             kset(s, buf, buf, 16);
             if (!rprobe(s, gdata, oc->r_val) || !nprobe(s, gdata, geob->datasize, oc->n_val))
                 break;
         }
         if (i >= sizeof(leaf_table)) {
-            av_log(s, AV_LOG_ERROR, "Invalid key\n");
+            av_log(s, 16, "Invalid key\n");
             return -1;
         }
-    }
+    } }
 
     /* e_val */
     av_des_init(&oc->av_des, oc->m_val, 64, 0);
@@ -275,10 +275,10 @@ static int oma_read_header(AVFormatContext *s)
     if (ret < EA3_HEADER_SIZE)
         return -1;
 
-    if (memcmp(buf, ((const uint8_t[]){'E', 'A', '3'}),3) || buf[4] != 0 || buf[5] != EA3_HEADER_SIZE) {
-        av_log(s, AV_LOG_ERROR, "Couldn't find the EA3 header !\n");
+    { const uint8_t tmp__1[] = {'E', 'A', '3'}; if (memcmp(buf, (tmp__1),3) || buf[4] != 0 || buf[5] != 96) {
+        av_log(s, 16, "Couldn't find the EA3 header !\n");
         return -1;
-    }
+    } }
 
     oc->content_start = avio_tell(s->pb);
 
@@ -435,15 +435,17 @@ static int oma_read_seek(struct AVFormatContext *s, int stream_index, int64_t ti
     return 0;
 }
 
+static const AVCodecTag* const tmp__2[] = {ff_oma_codec_tags, 0};
+
 AVInputFormat ff_oma_demuxer = {
-    .name           = "oma",
-    .long_name      = NULL_IF_CONFIG_SMALL("Sony OpenMG audio"),
-    .priv_data_size = sizeof(OMAContext),
-    .read_probe     = oma_read_probe,
-    .read_header    = oma_read_header,
-    .read_packet    = oma_read_packet,
-    .read_seek      = oma_read_seek,
-    .flags          = AVFMT_GENERIC_INDEX,
-    .extensions     = "oma,omg,aa3",
-    .codec_tag      = (const AVCodecTag* const []){ff_oma_codec_tags, 0},
+    "oma",
+    NULL_IF_CONFIG_SMALL("Sony OpenMG audio"),
+    AVFMT_GENERIC_INDEX,
+    "oma,omg,aa3",
+    tmp__2,
+    0, 0, 0, sizeof(OMAContext),
+    oma_read_probe,
+    oma_read_header,
+    oma_read_packet,
+    0, oma_read_seek,
 };

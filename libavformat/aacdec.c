@@ -82,12 +82,12 @@ static int adts_aac_read_header(AVFormatContext *s)
 }
 
 AVInputFormat ff_aac_demuxer = {
-    .name           = "aac",
-    .long_name      = NULL_IF_CONFIG_SMALL("raw ADTS AAC (Advanced Audio Coding)"),
-    .read_probe     = adts_aac_probe,
-    .read_header    = adts_aac_read_header,
-    .read_packet    = ff_raw_read_partial_packet,
-    .flags          = AVFMT_GENERIC_INDEX,
-    .extensions     = "aac",
-    .raw_codec_id   = AV_CODEC_ID_AAC,
+    "aac",
+    NULL_IF_CONFIG_SMALL("raw ADTS AAC (Advanced Audio Coding)"),
+    0x0100,
+    "aac",
+    0, 0, 0, AV_CODEC_ID_AAC,
+    0, adts_aac_probe,
+    adts_aac_read_header,
+    ff_raw_read_partial_packet,
 };

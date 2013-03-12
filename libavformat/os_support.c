@@ -31,12 +31,17 @@
 #undef open
 #include <fcntl.h>
 #include <io.h>
+#ifdef _XBOX
+#include <xtl.h>
+#else
 #include <windows.h>
+#endif
 
 int ff_win32_open(const char *filename_utf8, int oflag, int pmode)
 {
     int fd;
     int num_chars;
+#ifndef _XBOX
     wchar_t *filename_w;
 
     /* convert UTF-8 to wide chars */
@@ -51,9 +56,11 @@ int ff_win32_open(const char *filename_utf8, int oflag, int pmode)
 
     /* filename maybe be in CP_ACP */
     if (fd == -1 && !(oflag & O_CREAT))
+#endif
         return open(filename_utf8, oflag, pmode);
-
+#ifndef _XBOX
     return fd;
+#endif
 }
 #endif
 

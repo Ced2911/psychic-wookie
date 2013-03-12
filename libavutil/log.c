@@ -58,6 +58,9 @@ static int use_color = -1;
 static void colored_fputs(int level, const char *str)
 {
     if (use_color < 0) {
+#ifdef _XBOX
+		use_color = 0;
+#else
 #if HAVE_SETCONSOLETEXTATTRIBUTE
         CONSOLE_SCREEN_BUFFER_INFO con_info;
         con = GetStdHandle(STD_ERROR_HANDLE);
@@ -75,6 +78,7 @@ static void colored_fputs(int level, const char *str)
 #else
         use_color = getenv("AV_LOG_FORCE_COLOR") && !getenv("NO_COLOR") &&
                    !getenv("AV_LOG_FORCE_NOCOLOR");
+#endif
 #endif
     }
 

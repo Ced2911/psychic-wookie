@@ -284,11 +284,11 @@ static int vid_read_close(AVFormatContext *s)
 }
 
 AVInputFormat ff_bethsoftvid_demuxer = {
-    .name           = "bethsoftvid",
-    .long_name      = NULL_IF_CONFIG_SMALL("Bethesda Softworks VID"),
-    .priv_data_size = sizeof(BVID_DemuxContext),
-    .read_probe     = vid_probe,
-    .read_header    = vid_read_header,
-    .read_packet    = vid_read_packet,
-    .read_close     = vid_read_close,
+    "bethsoftvid",
+    NULL_IF_CONFIG_SMALL("Bethesda Softworks VID"),
+    0, 0, 0, 0, 0, 0, sizeof(BVID_DemuxContext),
+    vid_probe,
+    vid_read_header,
+    vid_read_packet,
+    vid_read_close,
 };

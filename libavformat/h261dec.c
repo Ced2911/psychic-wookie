@@ -62,4 +62,4 @@ static int h261_probe(AVProbeData *p)
     return 0;
 }
 
-FF_DEF_RAWVIDEO_DEMUXER(h261, "raw H.261", h261_probe, "h261", AV_CODEC_ID_H261)
+static const AVClass h261_demuxer_class = { "h261" " demuxer", av_default_item_name, ff_rawvideo_options, (52<<16 | 8<<8 | 0),};AVInputFormat ff_h261_demuxer = { "h261", NULL_IF_CONFIG_SMALL("raw H.261"), 0x0100, "h261", 0, &h261_demuxer_class, 0, AV_CODEC_ID_H261, sizeof(FFRawVideoDemuxerContext), h261_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};

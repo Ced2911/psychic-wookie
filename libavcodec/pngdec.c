@@ -646,13 +646,13 @@ static av_cold int png_dec_end(AVCodecContext *avctx)
 }
 
 AVCodec ff_png_decoder = {
-    .name           = "png",
-    .type           = AVMEDIA_TYPE_VIDEO,
-    .id             = AV_CODEC_ID_PNG,
-    .priv_data_size = sizeof(PNGDecContext),
-    .init           = png_dec_init,
-    .close          = png_dec_end,
-    .decode         = decode_frame,
-    .capabilities   = CODEC_CAP_DR1 /*| CODEC_CAP_DRAW_HORIZ_BAND*/,
-    .long_name      = NULL_IF_CONFIG_SMALL("PNG (Portable Network Graphics) image"),
+    "png",
+    "PNG (Portable Network Graphics) image",
+    AVMEDIA_TYPE_VIDEO,
+    AV_CODEC_ID_PNG,
+    0x0002,
+    0, 0, 0, 0, 0, 0, 0, 0, sizeof(PNGDecContext),
+    0, 0, 0, 0, 0, png_dec_init,
+    0, 0, decode_frame ,
+    png_dec_end,
 };

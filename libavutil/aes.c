@@ -217,10 +217,10 @@ int av_aes_init(AVAES *a, const uint8_t *key, int key_bits, int decrypt)
             inv_sbox[j] = i;
             sbox[i] = j;
         }
-        init_multbl2(dec_multbl, (const int[4]) { 0xe, 0x9, 0xd, 0xb },
-                     log8, alog8, inv_sbox);
-        init_multbl2(enc_multbl, (const int[4]) { 0x2, 0x1, 0x1, 0x3 },
-                     log8, alog8, sbox);
+         { const int tmp__0[4] = { 0xe, 0x9, 0xd, 0xb }; init_multbl2(dec_multbl, tmp__0,
+                     log8, alog8, inv_sbox); }
+        { const int tmp__1[4] = { 0x2, 0x1, 0x1, 0x3 }; init_multbl2(enc_multbl, tmp__1,
+                     log8, alog8, sbox); }
     }
 
     if (key_bits != 128 && key_bits != 192 && key_bits != 256)

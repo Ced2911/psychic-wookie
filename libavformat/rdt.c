@@ -558,10 +558,10 @@ static RTPDynamicProtocolHandler ff_rdt_ ## n ## _handler = { \
     .parse_packet     = rdt_parse_packet \
 }
 
-RDT_HANDLER(live_video, "x-pn-multirate-realvideo-live", AVMEDIA_TYPE_VIDEO);
-RDT_HANDLER(live_audio, "x-pn-multirate-realaudio-live", AVMEDIA_TYPE_AUDIO);
-RDT_HANDLER(video,      "x-pn-realvideo",                AVMEDIA_TYPE_VIDEO);
-RDT_HANDLER(audio,      "x-pn-realaudio",                AVMEDIA_TYPE_AUDIO);
+static RTPDynamicProtocolHandler ff_rdt_live_video_handler = { "x-pn-multirate-realvideo-live", AVMEDIA_TYPE_VIDEO, AV_CODEC_ID_NONE, 0, 0, rdt_parse_sdp_line, rdt_new_context, rdt_free_context, rdt_parse_packet };
+static RTPDynamicProtocolHandler ff_rdt_live_audio_handler = { "x-pn-multirate-realaudio-live", AVMEDIA_TYPE_AUDIO, AV_CODEC_ID_NONE, 0, 0, rdt_parse_sdp_line, rdt_new_context, rdt_free_context, rdt_parse_packet };
+static RTPDynamicProtocolHandler ff_rdt_video_handler = { "x-pn-realvideo", AVMEDIA_TYPE_VIDEO, AV_CODEC_ID_NONE, 0, 0, rdt_parse_sdp_line, rdt_new_context, rdt_free_context, rdt_parse_packet };
+static RTPDynamicProtocolHandler ff_rdt_audio_handler = { "x-pn-realaudio", AVMEDIA_TYPE_AUDIO, AV_CODEC_ID_NONE, 0, 0, rdt_parse_sdp_line, rdt_new_context, rdt_free_context, rdt_parse_packet };
 
 void av_register_rdt_dynamic_payload_handlers(void)
 {

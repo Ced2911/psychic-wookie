@@ -869,26 +869,26 @@ static int flv_read_seek(AVFormatContext *s, int stream_index,
 #define OFFSET(x) offsetof(FLVContext, x)
 #define VD AV_OPT_FLAG_VIDEO_PARAM | AV_OPT_FLAG_DECODING_PARAM
 static const AVOption options[] = {
-    { "flv_metadata", "Allocate streams according the onMetaData array",      OFFSET(trust_metadata), AV_OPT_TYPE_INT,    { .i64 = 0 }, 0, 1, VD},
+    { "flv_metadata", "Allocate streams according the onMetaData array",      OFFSET(trust_metadata), AV_OPT_TYPE_INT,  { 0 }, 0, 1, VD},
     { NULL }
 };
 
 static const AVClass class = {
-    .class_name = "flvdec",
-    .item_name  = av_default_item_name,
-    .option     = options,
-    .version    = LIBAVUTIL_VERSION_INT,
+    "flvdec",
+    av_default_item_name,
+    options,
+	LIBAVUTIL_VERSION_INT,
 };
 
 AVInputFormat ff_flv_demuxer = {
-    .name           = "flv",
-    .long_name      = NULL_IF_CONFIG_SMALL("FLV (Flash Video)"),
-    .priv_data_size = sizeof(FLVContext),
-    .read_probe     = flv_probe,
-    .read_header    = flv_read_header,
-    .read_packet    = flv_read_packet,
-    .read_seek      = flv_read_seek,
-    .read_close     = flv_read_close,
-    .extensions     = "flv",
-    .priv_class     = &class,
+    "flv",
+    NULL_IF_CONFIG_SMALL("FLV (Flash Video)"),
+    0, "flv",
+    0, &class,
+    0, 0, sizeof(FLVContext),
+    flv_probe,
+    flv_read_header,
+    flv_read_packet,
+    flv_read_close,
+    flv_read_seek,
 };

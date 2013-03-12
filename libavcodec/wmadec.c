@@ -925,32 +925,36 @@ static av_cold void flush(AVCodecContext *avctx)
     s->last_superframe_len= 0;
 }
 
+static const enum AVSampleFormat tmp__0[] = { AV_SAMPLE_FMT_FLTP,
+                                                      AV_SAMPLE_FMT_NONE };
+
 AVCodec ff_wmav1_decoder = {
-    .name           = "wmav1",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_WMAV1,
-    .priv_data_size = sizeof(WMACodecContext),
-    .init           = wma_decode_init,
-    .close          = ff_wma_end,
-    .decode         = wma_decode_superframe,
-    .flush          = flush,
-    .capabilities   = CODEC_CAP_DR1,
-    .long_name      = NULL_IF_CONFIG_SMALL("Windows Media Audio 1"),
-    .sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_FLTP,
-                                                      AV_SAMPLE_FMT_NONE },
+    "wmav1",
+    "Windows Media Audio 1",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_WMAV1,
+    0x0002,
+    0, 0, 0, tmp__0,
+    0, 0, 0, 0, sizeof(WMACodecContext),
+    0, 0, 0, 0, 0, wma_decode_init,
+    0, 0, wma_decode_superframe,
+    ff_wma_end,
+    flush,
 };
 
+static const enum AVSampleFormat tmp__1[] = { AV_SAMPLE_FMT_FLTP,
+                                                      AV_SAMPLE_FMT_NONE };
+
 AVCodec ff_wmav2_decoder = {
-    .name           = "wmav2",
-    .type           = AVMEDIA_TYPE_AUDIO,
-    .id             = AV_CODEC_ID_WMAV2,
-    .priv_data_size = sizeof(WMACodecContext),
-    .init           = wma_decode_init,
-    .close          = ff_wma_end,
-    .decode         = wma_decode_superframe,
-    .flush          = flush,
-    .capabilities   = CODEC_CAP_DR1,
-    .long_name      = NULL_IF_CONFIG_SMALL("Windows Media Audio 2"),
-    .sample_fmts    = (const enum AVSampleFormat[]) { AV_SAMPLE_FMT_FLTP,
-                                                      AV_SAMPLE_FMT_NONE },
+    "wmav2",
+    "Windows Media Audio 2",
+    AVMEDIA_TYPE_AUDIO,
+    AV_CODEC_ID_WMAV2,
+    0x0002,
+    0, 0, 0, tmp__1,
+    0, 0, 0, 0, sizeof(WMACodecContext),
+    0, 0, 0, 0, 0, wma_decode_init,
+    0, 0, wma_decode_superframe,
+    ff_wma_end,
+    flush,
 };
