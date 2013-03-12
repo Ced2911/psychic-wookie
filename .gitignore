@@ -15,6 +15,11 @@
 *.so
 *.so.*
 *.ver
+*.xdb
+*.idb
+*.log
+*.cache
+
 *-example
 *-test
 /.config
