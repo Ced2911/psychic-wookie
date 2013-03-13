@@ -1,0 +1,1 @@
+for %%f in (preproc\*.i) do call c99conv.exe %%f %%f.c
