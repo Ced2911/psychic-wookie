@@ -41,11 +41,20 @@ typedef struct
     float Uv[2];
 } vertices_t;
 
-vertices_t Vertices[3] =
+vertices_t Vertices[] =
 {
-    { -1.0f, -1.0f, 0.0f, 1, 1 },
-    {  1.0f,  1.0f, 0.0f, 0, 0 },
-    {  1.0f, -1.0f, 0.0f, 0, 1 }
+    { 
+		1, 1, 0, 
+		0, 0,
+	},
+	{ 
+		1, -1, 0, 
+		0, 1,
+	},
+	{ 
+		-1, 1, 0, 
+		1, 0,
+	}
 };
 
 // Define the vertex elements.
@@ -57,6 +66,43 @@ static const D3DVERTEXELEMENT9 VertexElements[3] =
 };
 
 IDirect3DVertexDeclaration9* pVertexDecl;
+
+//-------------------------------------------------------------------------------------
+// Surface displayed on screen (updated each frame)
+//-------------------------------------------------------------------------------------
+IDirect3DTexture9 * pFrameU = NULL;
+IDirect3DTexture9 * pFrameV = NULL;
+IDirect3DTexture9 * pFrameY = NULL;
+
+HRESULT InitYuvSurface(
+	D3DTexture **pFrameY,D3DTexture **pFrameU,D3DTexture **pFrameV,
+	int width, int height
+){
+	D3DXCreateTexture(
+		g_pd3dDevice, width,
+		height, D3DX_DEFAULT, 0, 
+		D3DFMT_LIN_L8, D3DPOOL_MANAGED,
+		pFrameY
+	);
+	D3DXCreateTexture(
+		g_pd3dDevice, width/2,
+		height/2, D3DX_DEFAULT, 0, 
+		D3DFMT_LIN_L8, D3DPOOL_MANAGED,
+		pFrameU
+	);
+	D3DXCreateTexture(
+		g_pd3dDevice, width/2,
+		height/2, D3DX_DEFAULT, 0, 
+		D3DFMT_LIN_L8, D3DPOOL_MANAGED,
+		pFrameV
+	);
+
+	if(pFrameV==NULL || pFrameU==NULL || pFrameY == NULL){
+		return E_FAIL;
+	}
+	return S_OK;
+};
+
 
 static void compile_shaders() {
 	// Buffers to hold compiled shaders and possible error messages
@@ -81,7 +127,12 @@ static void compile_shaders() {
     pShaderCode = NULL;
 
     // Compile pixel shader.
+	/*
     hr = D3DXCompileShader( shader_pixel_rgb, ( UINT )strlen( shader_pixel_rgb ),
+                            NULL, NULL, "main", "ps_2_0", 0,
+                            &pShaderCode, &pErrorMsg, NULL );
+							*/
+	hr = D3DXCompileShader( shader_pixel_yuv, ( UINT )strlen( shader_pixel_yuv ),
                             NULL, NULL, "main", "ps_2_0", 0,
                             &pShaderCode, &pErrorMsg, NULL );
     if( FAILED( hr ) )
@@ -99,7 +150,7 @@ static void compile_shaders() {
     pShaderCode = NULL;
 }
 
-void vo_init() {
+void vo_init(int width, int height) {
 	g_pD3D = Direct3DCreate9( D3D_SDK_VERSION );
 
 	// Set up the structure used to create the D3DDevice.
@@ -125,9 +176,52 @@ void vo_init() {
 
 	// Create vb
     IDirect3DDevice9_CreateVertexDeclaration(g_pd3dDevice, VertexElements, &pVertexDecl);
+
+	// Create yuv surf
+	InitYuvSurface(&pFrameY, &pFrameU, &pFrameV, width, height);
 }
 
-void vo_update() {
+void vo_update(AVFrame * pFrame) {
+	// Refresh texture frame
+	g_pd3dDevice->SetTexture(0,NULL);
+	g_pd3dDevice->SetTexture(1,NULL);
+	g_pd3dDevice->SetTexture(2,NULL);
+
+	AVPicture pict;
+	memset(&pict, 0, sizeof(pict));
+
+	//Lock texture to access data
+	D3DLOCKED_RECT lockRectY;
+	D3DLOCKED_RECT lockRectU;
+	D3DLOCKED_RECT lockRectV;
+
+	pFrameY->LockRect( 0, &lockRectY, NULL, 0 );
+	pFrameU->LockRect( 0, &lockRectU, NULL, 0 );
+	pFrameV->LockRect( 0, &lockRectV, NULL, 0 );
+
+	pict.data[0] = (uint8_t*)lockRectY.pBits;
+	pict.data[1] = (uint8_t*)lockRectU.pBits;
+	pict.data[2] = (uint8_t*)lockRectV.pBits;
+
+	pict.linesize[0] = lockRectY.Pitch;
+	pict.linesize[1] = lockRectU.Pitch;
+	pict.linesize[2] = lockRectV.Pitch;
+
+	//Scale it ..
+	sws_scale(
+		player_context.sws_context, pFrame->data, 
+		pFrame->linesize, 0, 
+		player_context.video_stream->codec->height, 
+		pict.data, pict.linesize
+	);
+
+	//Release lock on texture
+	pFrameY->UnlockRect(0);
+	pFrameU->UnlockRect(0);
+	pFrameV->UnlockRect(0);
+
+
+	// Display
     g_pd3dDevice->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL,
                             0xff000000, 1.0f, 0L );
 
@@ -135,7 +229,10 @@ void vo_update() {
     g_pd3dDevice->SetPixelShader( pPixelShader );
     g_pd3dDevice->SetVertexDeclaration( pVertexDecl );
 
+	g_pd3dDevice->SetTexture(0, pFrameY);
+	g_pd3dDevice->SetTexture(1, pFrameU);
+	g_pd3dDevice->SetTexture(2, pFrameV);
 
-    g_pd3dDevice->DrawPrimitiveUP( D3DPT_RECTLIST, 1, Vertices, sizeof( Vertices ) );
+	g_pd3dDevice->DrawPrimitiveUP( D3DPT_RECTLIST, 1, Vertices, sizeof( vertices_t ) );
     g_pd3dDevice->Present( NULL, NULL, NULL, NULL );
 }

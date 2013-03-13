@@ -1088,11 +1088,12 @@ void ff_get_unscaled_swscale(SwsContext *c)
         else /* Planar YUV or gray */
             c->swScale = planarCopyWrapper;
     }
-
+#ifndef _XBOX
     if (ARCH_BFIN)
         ff_bfin_get_unscaled_swscale(c);
     if (HAVE_ALTIVEC)
         ff_swscale_get_unscaled_altivec(c);
+#endif
 }
 
 static void reset_ptr(const uint8_t *src[], int format)

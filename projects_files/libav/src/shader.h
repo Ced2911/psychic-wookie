@@ -64,3 +64,38 @@ const char * shader_pixel_rgb =
     " {                                            "
 	"     return tex2D(s, In.Uv);                  " 
     " }                                            ";
+
+
+//-------------------------------------------------------------------------------------
+// Pixel shader
+//-------------------------------------------------------------------------------------
+const char* shader_pixel_yuv = 
+" sampler2D  YTexture : register( s0 );			"
+" sampler2D  UTexture : register( s1 );			"
+" sampler2D  VTexture : register( s2 );			"
+" struct PS_IN                                 "
+" {                                            "
+"     float2 Uv : TEXCOORD0;                    "  // Interpolated color from                      
+" };                                           "  // the vertex shader
+"                                              "  
+" float4 main( PS_IN In ) : COLOR              "  
+" {                                            " 
+"												"
+"		float4 Y_4D = tex2D( YTexture, In.Uv );  "
+"		float4 U_4D = tex2D( UTexture, In.Uv );  "
+"		float4 V_4D = tex2D( VTexture, In.Uv );  "
+"                                             "
+"		float R = 1.164 * ( Y_4D.r - 0.0625 ) + 1.596 * ( V_4D.r - 0.5 ); "
+"		float G = 1.164 * ( Y_4D.r - 0.0625 ) - 0.391 * ( U_4D.r - 0.5 ) - 0.813 * ( V_4D.r - 0.5 ); "
+"		float B = 1.164 * ( Y_4D.r - 0.0625 ) + 2.018 * ( U_4D.r - 0.5 );          "                
+"                            "                 
+"		float4 ARGB;     "                        
+"		ARGB.a = 1.0;     "                       
+"		ARGB.r = R;        "                      
+"		ARGB.g = G;         "                     
+"		ARGB.b = B;          "                    
+"                            "                 
+"		return ARGB;  "
+//" return float4(1,1,1,1);"
+"					"		
+" }                                            "; 

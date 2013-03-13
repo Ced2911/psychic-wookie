@@ -33,8 +33,12 @@
 #endif
 #endif
 #if HAVE_VIRTUALALLOC
+#ifndef _XBOX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#else
+#include <xtl.h>
+#endif
 #endif
 
 #include "libavutil/attributes.h"
@@ -73,6 +77,7 @@ typedef struct FormatEntry {
     int is_supported_in, is_supported_out;
 } FormatEntry;
 
+/*
 static const FormatEntry format_entries[AV_PIX_FMT_NB] = {
     [AV_PIX_FMT_YUV420P]     = { 1, 1 },
     [AV_PIX_FMT_YUYV422]     = { 1, 1 },
@@ -170,6 +175,105 @@ static const FormatEntry format_entries[AV_PIX_FMT_NB] = {
     [AV_PIX_FMT_GBRP10BE]    = { 1, 1 },
     [AV_PIX_FMT_GBRP16LE]    = { 1, 0 },
     [AV_PIX_FMT_GBRP16BE]    = { 1, 0 },
+};
+*/
+static const FormatEntry format_entries[AV_PIX_FMT_NB] = {
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 0 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 0, 0 },
+	{ 1, 1 },
+	{ 0, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 0, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 0 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 1 },
+	{ 1, 0 },
+	{ 1, 0 },
 };
 
 int sws_isSupportedInput(enum AVPixelFormat pix_fmt)
@@ -494,13 +598,13 @@ static int initFilter(int16_t **outFilter, int32_t **filterPos,
         if (minFilterSize < 3)
             filterAlign = 1;
     }
-
+#ifndef _XBOX
     if (INLINE_MMX(cpu_flags)) {
         // special case for unscaled vertical filtering
         if (minFilterSize == 1 && filterAlign == 2)
             filterAlign = 1;
     }
-
+#endif
     assert(minFilterSize > 0);
     filterSize = (minFilterSize + (filterAlign - 1)) & (~(filterAlign - 1));
     assert(filterSize > 0);
@@ -795,10 +899,11 @@ int sws_setColorspaceDetails(struct SwsContext *c, const int inv_table[4],
     ff_yuv2rgb_c_init_tables(c, inv_table, srcRange, brightness,
                              contrast, saturation);
     // FIXME factorize
-
+#ifndef _XBOX
     if (HAVE_ALTIVEC && av_get_cpu_flags() & AV_CPU_FLAG_ALTIVEC)
         ff_yuv2rgb_init_tables_altivec(c, inv_table, brightness,
                                        contrast, saturation);
+#endif
     return 0;
 }
 
@@ -1017,6 +1122,7 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
     FF_ALLOC_OR_GOTO(c, c->formatConvBuffer,
                      (FFALIGN(srcW, 16) * 2 * FFALIGN(c->srcBpc, 8) >> 3) + 16,
                      fail);
+#ifndef _XBOX
     if (INLINE_MMXEXT(cpu_flags) && c->srcBpc == 8 && c->dstBpc <= 10) {
         c->canMMXEXTBeUsed = (dstW >= srcW && (dstW & 31) == 0 &&
                               (srcW & 15) == 0) ? 1 : 0;
@@ -1029,6 +1135,7 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
         if (usesHFilter)
             c->canMMXEXTBeUsed = 0;
     } else
+#endif
         c->canMMXEXTBeUsed = 0;
 
     c->chrXInc = (((int64_t)c->chrSrcW << 16) + (c->chrDstW >> 1)) / c->chrDstW;
@@ -1046,11 +1153,13 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
             c->lumXInc += 20;
             c->chrXInc += 20;
         }
+#ifndef _XBOX
         // we don't use the x86 asm scaler if MMX is available
         else if (INLINE_MMX(cpu_flags)) {
             c->lumXInc = ((int64_t)(srcW       - 2) << 16) / (dstW       - 2) - 20;
             c->chrXInc = ((int64_t)(c->chrSrcW - 2) << 16) / (c->chrDstW - 2) - 20;
         }
+#endif
     }
 
 #define USE_MMAP (HAVE_MMAP && HAVE_MPROTECT && defined MAP_ANONYMOUS)
@@ -1264,7 +1373,7 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
                "",
 #endif
                sws_format_name(dstFormat));
-
+#ifndef _XBOX
         if (INLINE_MMXEXT(cpu_flags))
             av_log(c, AV_LOG_INFO, "using MMXEXT\n");
         else if (INLINE_AMD3DNOW(cpu_flags))
@@ -1274,6 +1383,7 @@ av_cold int sws_init_context(SwsContext *c, SwsFilter *srcFilter,
         else if (HAVE_ALTIVEC && cpu_flags & AV_CPU_FLAG_ALTIVEC)
             av_log(c, AV_LOG_INFO, "using AltiVec\n");
         else
+#endif
             av_log(c, AV_LOG_INFO, "using C\n");
 
         av_log(c, AV_LOG_VERBOSE, "%dx%d -> %dx%d\n", srcW, srcH, dstW, dstH);

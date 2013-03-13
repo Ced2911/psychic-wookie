@@ -120,7 +120,7 @@
       <MinimalRebuild>true</MinimalRebuild>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_DEBUG;_XBOX;_LIB;HAVE_AV_CONFIG_H;inline=__inline;snprintf=_snprintf;_USE_MATH_DEFINES</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_XBOX;__STDC_CONSTANT_MACROS;_LIB;HAVE_AV_CONFIG_H;inline=__inline;snprintf=_snprintf;_USE_MATH_DEFINES</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
       <AdditionalIncludeDirectories>../zlib/src;../../libavutil;../include;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -129,7 +129,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
-      <AdditionalDependencies>xapilibd.lib;d3d9d.lib;d3dx9d.lib;xgraphicsd.lib;xboxkrnl.lib;xnetd.lib;xaudiod2.lib;xactd3.lib;x3daudiod.lib;xmcored.lib;xbdm.lib;vcompd.lib;../libavcodec/$(ConfigurationName)/libavcodec.lib;../libavformat/$(ConfigurationName)/libavformat.lib;../libavutil/$(ConfigurationName)/libavutil.lib</AdditionalDependencies>
+      <AdditionalDependencies>xapilibd.lib;d3d9d.lib;d3dx9d.lib;xgraphicsd.lib;xboxkrnl.lib;xnetd.lib;xaudiod2.lib;xactd3.lib;x3daudiod.lib;xmcored.lib;xbdm.lib;vcompd.lib;../libavcodec/$(ConfigurationName)/libavcodec.lib;../libavformat/$(ConfigurationName)/libavformat.lib;../libavutil/$(ConfigurationName)/libavutil.lib;../libswscale/$(ConfigurationName)/libswscale.lib</AdditionalDependencies>
     </Link>
     <Deploy>
       <DeploymentType>CopyToHardDrive</DeploymentType>
@@ -357,7 +357,6 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">CompileAsCpp</CompileAs>
     </ClCompile>
-    <ClInclude Include="src\vo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\player.h" />

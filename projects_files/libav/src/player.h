@@ -22,20 +22,6 @@
 
 #pragma once
 
-/** Missing **/
-#define INT8_C(val)  val##i8
-#define INT16_C(val) val##i16
-#define INT32_C(val) val##i32
-#define INT64_C(val) val##i64
-
-#define UINT8_C(val)  val##ui8
-#define UINT16_C(val) val##ui16
-#define UINT32_C(val) val##ui32
-#define UINT64_C(val) val##ui64
-
-#define INTMAX_C   INT64_C
-#define UINTMAX_C  UINT64_C
-
 extern "C" {
 #include "config.h"
 #include <stdint.h>
@@ -43,6 +29,7 @@ extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/dict.h>	
 #include <libavutil/avutil.h>
+#include <libswscale/swscale.h>
 }
 
 typedef struct {
@@ -55,6 +42,8 @@ typedef struct {
 	AVStream * video_stream;
 	AVStream * audio_stream;
 
+	SwsContext * sws_context;
+
 } player_context_t;
 
 extern player_context_t player_context;
@@ -63,8 +52,8 @@ extern player_context_t player_context;
 void ao_init();
 void ao_update();
 
-void vo_init();
-void vo_update();
+void vo_init(int, int);
+void vo_update(AVFrame *);
 
 void input_init();
 void input_update();

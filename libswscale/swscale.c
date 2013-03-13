@@ -772,10 +772,11 @@ SwsFunc ff_getSwsFunc(SwsContext *c)
 {
     sws_init_swScale_c(c);
 
+#ifndef _XBOX
     if (HAVE_MMX)
         ff_sws_init_swScale_mmx(c);
     if (HAVE_ALTIVEC)
         ff_sws_init_swScale_altivec(c);
-
+#endif
     return swScale;
 }

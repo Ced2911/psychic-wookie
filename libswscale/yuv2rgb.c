@@ -564,7 +564,7 @@ CLOSEYUV2RGBFUNC(1)
 SwsFunc ff_yuv2rgb_get_func_ptr(SwsContext *c)
 {
     SwsFunc t = NULL;
-
+#ifndef _XBOX
     if (HAVE_MMX)
         t = ff_yuv2rgb_init_mmx(c);
     else if (HAVE_VIS)
@@ -573,7 +573,7 @@ SwsFunc ff_yuv2rgb_get_func_ptr(SwsContext *c)
         t = ff_yuv2rgb_init_altivec(c);
     else if (ARCH_BFIN)
         t = ff_yuv2rgb_get_func_ptr_bfin(c);
-
+#endif
     if (t)
         return t;
 

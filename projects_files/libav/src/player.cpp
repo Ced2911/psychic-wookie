@@ -83,7 +83,11 @@ static int open_stream(int stream_index) {
 }
 
 void add_picture_to_queue(AVFrame *pFrame) {
-	vo_update();
+	
+}
+
+void refresh_display(AVFrame * pFrame) {
+	vo_update(pFrame);
 }
 
 void video_decode_frame(AVPacket * pkt) {
@@ -95,6 +99,9 @@ void video_decode_frame(AVPacket * pkt) {
 	
 	if (frameFinished) {
 		add_picture_to_queue(pFrame);
+
+		// Todo move ...
+		refresh_display(pFrame);
 	}
 
 	av_free_packet(pkt);
@@ -113,9 +120,7 @@ int player_run(char * filename) {
 	AVPacket pkt1;
 	AVPacket *packet = &pkt1;
 	player_context.filename = strdup(filename);
-
-	vo_init();
-
+	
 	if ((ret = avformat_open_input(&player_context.fmt_ctx, player_context.filename, NULL, NULL))) {
         return ret;
 	}
@@ -138,6 +143,20 @@ int player_run(char * filename) {
 
 	if (player_context.aid)
 		open_stream(player_context.aid);
+
+	// Init libswcale
+	player_context.sws_context = sws_getContext(
+		player_context.video_stream->codec->width, 
+		player_context.video_stream->codec->height,
+		player_context.video_stream->codec->pix_fmt, 
+		player_context.video_stream->codec->width, 
+		player_context.video_stream->codec->height,
+		PIX_FMT_YUV420P, 
+		SWS_FAST_BILINEAR, 
+		NULL, NULL, NULL);
+
+	
+	vo_init(player_context.video_stream->codec->width, player_context.video_stream->codec->height);
 
 	while(1) {
 		if (av_read_frame(player_context.fmt_ctx, packet) < 0) {
