@@ -1201,19 +1201,7 @@
     <ClCompile Include="..\..\libavcodec\ituh263enc.c">
       <Filter>Disabled</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\libavcodec\ituh263dec.c">
-      <Filter>Disabled</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\libavcodec\intrax8dsp.c">
-      <Filter>Disabled</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\libavcodec\intrax8.c">
-      <Filter>Disabled</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\libavcodec\interplayvideo.c">
-      <Filter>Disabled</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\libavcodec\intelh263dec.c">
       <Filter>Disabled</Filter>
     </ClCompile>
     <ClCompile Include="..\..\libavcodec\indeo5.c">
@@ -1295,9 +1283,6 @@
       <Filter>Disabled</Filter>
     </ClCompile>
     <ClCompile Include="..\..\libavcodec\flvenc.c">
-      <Filter>Disabled</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\libavcodec\flvdec.c">
       <Filter>Disabled</Filter>
     </ClCompile>
     <ClCompile Include="..\..\libavcodec\flicvideo.c">
@@ -1709,6 +1694,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\libavcodec\dv_profile.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libavcodec\ituh263dec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libavcodec\intelh263dec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libavcodec\flvdec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libavcodec\intrax8.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libavcodec\intrax8dsp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

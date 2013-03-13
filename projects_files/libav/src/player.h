@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Reinhard Tartler
+ * Copyright (c) 2013 Ced2911
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,32 +20,57 @@
  * THE SOFTWARE.
  */
 
-/**
- * @file
- * @example libavformat/metadata-example.c
- * Shows how the metadata API can be used in application programs.
- */
-#include <xtl.h>
-#include <stdio.h>
+#pragma once
 
+/** Missing **/
+#define INT8_C(val)  val##i8
+#define INT16_C(val) val##i16
+#define INT32_C(val) val##i32
+#define INT64_C(val) val##i64
+
+#define UINT8_C(val)  val##ui8
+#define UINT16_C(val) val##ui16
+#define UINT32_C(val) val##ui32
+#define UINT64_C(val) val##ui64
+
+#define INTMAX_C   INT64_C
+#define UINTMAX_C  UINT64_C
+
+extern "C" {
+#include "config.h"
+#include <stdint.h>
+#include <inttypes.h>
 #include <libavformat/avformat.h>
-#include <libavutil/dict.h>
-
-int main (int argc, char **argv)
-{
-    AVFormatContext *fmt_ctx = NULL;
-    AVDictionaryEntry *tag = NULL;
-    int ret;
-
-    av_register_all();
-    if ((ret = avformat_open_input(&fmt_ctx, "game:\\movie.avi", NULL, NULL)))
-        return ret;
-
-	av_dump_format(fmt_ctx, 0, "game:\\movie.avi", 0);
-
-    while ((tag = av_dict_get(fmt_ctx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) 
-       printf("%s=%s\n", tag->key, tag->value);
-
-    avformat_free_context(fmt_ctx);
-    return 0;
+#include <libavutil/dict.h>	
+#include <libavutil/avutil.h>
 }
+
+typedef struct {
+	char * filename;
+	AVFormatContext * fmt_ctx;
+
+	int vid;
+	int aid;
+
+	AVStream * video_stream;
+	AVStream * audio_stream;
+
+} player_context_t;
+
+extern player_context_t player_context;
+
+// Ao Vo Input stuff
+void ao_init();
+void ao_update();
+
+void vo_init();
+void vo_update();
+
+void input_init();
+void input_update();
+
+// Player func...
+void player_init();
+void player_dump_info();
+int player_run(char * filename);
+void player_close();

@@ -22,6 +22,9 @@
 #define AVUTIL_PPC_TIMER_H
 
 #include <stdint.h>
+#ifdef _XBOX
+#include <ppcintrinsics.h>
+#endif
 
 #define AV_READ_TIME read_time
 

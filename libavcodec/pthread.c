@@ -181,6 +181,8 @@ static int get_logical_cpus(AVCodecContext *avctx)
     nb_cpus = sysconf(_SC_NPROC_ONLN);
 #elif HAVE_SYSCONF && defined(_SC_NPROCESSORS_ONLN)
     nb_cpus = sysconf(_SC_NPROCESSORS_ONLN);
+#elif _XBOX
+	nb_cpus = 6;
 #endif
     av_log(avctx, AV_LOG_DEBUG, "detected %d logical cores\n", nb_cpus);
     return nb_cpus;

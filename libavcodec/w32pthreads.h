@@ -260,7 +260,7 @@ static void pthread_cond_signal(pthread_cond_t *cond)
 
 static void w32thread_init(void)
 {
-#ifndef XBOX
+#ifndef _XBOX
     HANDLE kernel_dll = GetModuleHandle(TEXT("kernel32.dll"));
     /* if one is available, then they should all be available */
     cond_init      =

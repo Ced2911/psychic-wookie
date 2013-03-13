@@ -485,9 +485,24 @@ void avcodec_register_all(void)
     REGISTER_PARSER(H263,               h263);
     REGISTER_PARSER(H264,               h264);
 
+	REGISTER_PARSER(MPEG4VIDEO,         mpeg4video);
+    REGISTER_PARSER(MPEGAUDIO,          mpegaudio);
+    REGISTER_PARSER(MPEGVIDEO,          mpegvideo);
+
 	REGISTER_DECODER(MP3,               mp3);
 	REGISTER_DECODER(AAC,               aac);
     REGISTER_DECODER(AAC_LATM,          aac_latm);
     REGISTER_DECODER(AC3,               ac3);
+
+    REGISTER_DECODER(H261,              h261);
+    REGISTER_DECODER(H263,              h263);
+   // REGISTER_DECODER(H263I,             h263i);
+    REGISTER_DECODER(H264,              h264);
+    REGISTER_DECODER(MPEG1VIDEO,        mpeg1video);
+    REGISTER_DECODER(MPEG2VIDEO,        mpeg2video);
+    REGISTER_DECODER(MPEG4,             mpeg4);
+    REGISTER_DECODER(MSMPEG4V1,         msmpeg4v1);
+    REGISTER_DECODER(MSMPEG4V2,         msmpeg4v2);
+    REGISTER_DECODER(MSMPEG4V3,         msmpeg4v3);
 #endif
 }
