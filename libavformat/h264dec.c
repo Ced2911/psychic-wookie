@@ -67,4 +67,4 @@ static int h264_probe(AVProbeData *p)
     return 0;
 }
 
-static const AVClass h264_demuxer_class = { "h264" " demuxer", av_default_item_name, ff_rawvideo_options, (52<<16 | 8<<8 | 0),};AVInputFormat ff_h264_demuxer = { "h264", NULL_IF_CONFIG_SMALL("raw H.264 video"), 0x0100, "h26l,h264,264", 0, &h264_demuxer_class, 0, AV_CODEC_ID_H264, sizeof(FFRawVideoDemuxerContext), h264_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};
+static const AVClass h264_demuxer_class = { "h264" " demuxer", av_default_item_name, ff_rawvideo_options, LIBAVUTIL_VERSION_INT,};AVInputFormat ff_h264_demuxer = { "h264", NULL_IF_CONFIG_SMALL("raw H.264 video"), 0x0100, "h26l,h264,264", 0, &h264_demuxer_class, 0, AV_CODEC_ID_H264, sizeof(FFRawVideoDemuxerContext), h264_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};

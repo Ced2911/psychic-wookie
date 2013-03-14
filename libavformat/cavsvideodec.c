@@ -65,4 +65,4 @@ static int cavsvideo_probe(AVProbeData *p)
     return 0;
 }
 
-static const AVClass cavsvideo_demuxer_class = { "cavsvideo" " demuxer", av_default_item_name, ff_rawvideo_options, (52<<16 | 8<<8 | 0),};AVInputFormat ff_cavsvideo_demuxer = { "cavsvideo", NULL_IF_CONFIG_SMALL("raw Chinese AVS (Audio Video Standard)"), 0x0100, ((void *)0), 0, &cavsvideo_demuxer_class, 0, AV_CODEC_ID_CAVS, sizeof(FFRawVideoDemuxerContext), cavsvideo_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};
+static const AVClass cavsvideo_demuxer_class = { "cavsvideo" " demuxer", av_default_item_name, ff_rawvideo_options, LIBAVUTIL_VERSION_INT,};AVInputFormat ff_cavsvideo_demuxer = { "cavsvideo", NULL_IF_CONFIG_SMALL("raw Chinese AVS (Audio Video Standard)"), 0x0100, ((void *)0), 0, &cavsvideo_demuxer_class, 0, AV_CODEC_ID_CAVS, sizeof(FFRawVideoDemuxerContext), cavsvideo_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};

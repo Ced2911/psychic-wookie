@@ -42,4 +42,4 @@ static int dnxhd_probe(AVProbeData *p)
     return AVPROBE_SCORE_MAX;
 }
 
-static const AVClass dnxhd_demuxer_class = { "dnxhd" " demuxer", av_default_item_name, ff_rawvideo_options, (52<<16 | 8<<8 | 0),};AVInputFormat ff_dnxhd_demuxer = { "dnxhd", NULL_IF_CONFIG_SMALL("raw DNxHD (SMPTE VC-3)"), 0x0100, ((void *)0), 0, &dnxhd_demuxer_class, 0, AV_CODEC_ID_DNXHD, sizeof(FFRawVideoDemuxerContext), dnxhd_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};
+static const AVClass dnxhd_demuxer_class = { "dnxhd" " demuxer", av_default_item_name, ff_rawvideo_options, LIBAVUTIL_VERSION_INT,};AVInputFormat ff_dnxhd_demuxer = { "dnxhd", NULL_IF_CONFIG_SMALL("raw DNxHD (SMPTE VC-3)"), 0x0100, ((void *)0), 0, &dnxhd_demuxer_class, 0, AV_CODEC_ID_DNXHD, sizeof(FFRawVideoDemuxerContext), dnxhd_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};

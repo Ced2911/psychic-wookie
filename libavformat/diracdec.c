@@ -31,4 +31,4 @@ static int dirac_probe(AVProbeData *p)
         return 0;
 }
 
-static const AVClass dirac_demuxer_class = { "dirac" " demuxer", av_default_item_name, ff_rawvideo_options, (52<<16 | 8<<8 | 0),};AVInputFormat ff_dirac_demuxer = { "dirac", NULL_IF_CONFIG_SMALL("raw Dirac"), 0x0100, ((void *)0), 0, &dirac_demuxer_class, 0, AV_CODEC_ID_DIRAC, sizeof(FFRawVideoDemuxerContext), dirac_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};
+static const AVClass dirac_demuxer_class = { "dirac" " demuxer", av_default_item_name, ff_rawvideo_options, LIBAVUTIL_VERSION_INT,};AVInputFormat ff_dirac_demuxer = { "dirac", NULL_IF_CONFIG_SMALL("raw Dirac"), 0x0100, ((void *)0), 0, &dirac_demuxer_class, 0, AV_CODEC_ID_DIRAC, sizeof(FFRawVideoDemuxerContext), dirac_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};

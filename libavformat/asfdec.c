@@ -90,7 +90,7 @@ static const AVClass asf_class = {
     "asf demuxer",
     av_default_item_name,
     options,
-    (52<<16 | 8<<8 | 0),
+    LIBAVUTIL_VERSION_INT,
 };
 
 #undef NDEBUG

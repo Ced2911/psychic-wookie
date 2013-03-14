@@ -50,7 +50,7 @@ typedef struct Parser {
     double var[VARS];
 } Parser;
 
-static const AVClass class = { "Eval", av_default_item_name, ((void *)0), (52<<16 | 8<<8 | 0), (size_t)&(((Parser *)0)->log_offset), (size_t)&(((Parser *)0)->log_ctx) };
+static const AVClass class = { "Eval", av_default_item_name, ((void *)0), LIBAVUTIL_VERSION_INT, (size_t)&(((Parser *)0)->log_offset), (size_t)&(((Parser *)0)->log_ctx) };
 
 static const int8_t si_prefixes['z' - 'E' + 1] = {
     18,

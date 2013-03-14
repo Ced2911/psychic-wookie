@@ -58,7 +58,7 @@ static int ingenient_read_packet(AVFormatContext *s, AVPacket *pkt)
     return ret;
 }
 
-static const AVClass ingenient_demuxer_class = { "ingenient" " demuxer", av_default_item_name, ff_rawvideo_options, (52<<16 | 8<<8 | 0),};
+static const AVClass ingenient_demuxer_class = { "ingenient" " demuxer", av_default_item_name, ff_rawvideo_options, LIBAVUTIL_VERSION_INT,};
 
 AVInputFormat ff_ingenient_demuxer = {
     "ingenient",

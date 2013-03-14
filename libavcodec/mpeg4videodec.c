@@ -2266,9 +2266,9 @@ AVCodec ff_mpeg4_decoder = {
     "MPEG-4 part 2",
     AVMEDIA_TYPE_VIDEO,
     AV_CODEC_ID_MPEG4,
-    0x0001 | 0x0002 |
-                             0x0008 | 0x0020 |
-                             0x1000,
+    CODEC_CAP_DRAW_HORIZ_BAND | CODEC_CAP_DR1 |
+	CODEC_CAP_TRUNCATED | CODEC_CAP_DELAY |
+	CODEC_CAP_FRAME_THREADS,
     0, ff_h263_hwaccel_pixfmt_list_420,
     0, 0, 0, 0, 0, mpeg4_video_profiles,
     sizeof(MpegEncContext),

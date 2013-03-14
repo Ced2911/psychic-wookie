@@ -363,7 +363,7 @@ static const AVClass gif_muxer_class = {
     "GIF muxer",
     av_default_item_name,
     options,
-    (52<<16 | 8<<8 | 0),
+    LIBAVUTIL_VERSION_INT,
 };
 
 AVOutputFormat ff_gif_muxer = {

@@ -99,7 +99,7 @@ int av_parse_cpu_flags(const char *s)
         "cpuflags",
         av_default_item_name,
         cpuflags_opts,
-        (52<<16 | 8<<8 | 0),
+        LIBAVUTIL_VERSION_INT,
     };
 
     int flags = 0, ret;

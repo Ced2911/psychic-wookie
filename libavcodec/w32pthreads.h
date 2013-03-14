@@ -81,10 +81,21 @@ static unsigned __stdcall attribute_align_arg win32thread_worker(void *arg)
 static int pthread_create(pthread_t *thread, const void *unused_attr,
                           void *(*start_routine)(void*), void *arg)
 {
+#ifdef _XBOX
+	static int _cpu = 0;
+#endif
     thread->func   = start_routine;
     thread->arg    = arg;
     thread->handle = (void*)_beginthreadex(NULL, 0, win32thread_worker, thread,
                                            0, NULL);
+#ifdef _XBOX
+	// Change thread cpu
+	SuspendThread(thread->handle);
+	XSetThreadProcessor(thread->handle, _cpu % MAXIMUM_PROCESSORS);
+	ResumeThread(thread->handle);
+
+	_cpu++;
+#endif
     return !thread->handle;
 }
 

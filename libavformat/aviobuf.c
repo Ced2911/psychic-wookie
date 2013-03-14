@@ -59,7 +59,7 @@ const AVClass ffio_url_class = {
     "AVIOContext",
     av_default_item_name,
     ffio_url_options,
-    (52<<16 | 8<<8 | 0),
+    LIBAVUTIL_VERSION_INT,
     0, 0, ffio_url_child_next,
     ffio_url_child_class_next,
 };

@@ -49,5 +49,5 @@ static int mpeg4video_probe(AVProbeData *probe_packet)
     return 0;
 }
 
-static const AVClass m4v_demuxer_class = { "m4v" " demuxer", av_default_item_name, ff_rawvideo_options, (52<<16 | 8<<8 | 0),};AVInputFormat ff_m4v_demuxer = { "m4v", NULL_IF_CONFIG_SMALL("raw MPEG-4 video"), 0x0100, "m4v", 0, &m4v_demuxer_class, 0, AV_CODEC_ID_MPEG4, sizeof(FFRawVideoDemuxerContext), mpeg4video_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};
+static const AVClass m4v_demuxer_class = { "m4v" " demuxer", av_default_item_name, ff_rawvideo_options, LIBAVUTIL_VERSION_INT,};AVInputFormat ff_m4v_demuxer = { "m4v", NULL_IF_CONFIG_SMALL("raw MPEG-4 video"), 0x0100, "m4v", 0, &m4v_demuxer_class, 0, AV_CODEC_ID_MPEG4, sizeof(FFRawVideoDemuxerContext), mpeg4video_probe, ff_raw_video_read_header, ff_raw_read_partial_packet,};
 
